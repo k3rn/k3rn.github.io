@@ -1,0 +1,85 @@
+==================================================================
+https://keybase.io/kern
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://mateuskern.com
+  * I am kern (https://keybase.io/kern) on keybase.
+  * I have a public key with fingerprint E3AE 48EB 463F B2FE DF6A  4678 D13D
+  * F6B1 E0A6 AB42
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "client": {
+            "name": "keybase.io node.js client",
+            "version": "0.4.11"
+        },
+        "key": {
+            "fingerprint": "e3ae48eb463fb2fedf6a4678d13df6b1e0a6ab42",
+            "host": "keybase.io",
+            "key_id": "D13DF6B1E0A6AB42",
+            "uid": "15e84771f48fd0fb0223ca763e6e6900",
+            "username": "kern"
+        },
+        "merkle_root": {
+            "ctime": 1405810771,
+            "hash":
+"4ff36c47e740e3fe3854f9039a154f3aa7d205f762e7a5068e52a9435617263d8de4137fd14243e62592f2331404f24a60b964f0d7a2119d452e4c97f96019f0",
+            "seqno": 29974
+        },
+        "service": {
+            "hostname": "mateuskern.com",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1405810996,
+    "expire_in": 157680000,
+    "prev": "71381c62b5e75b3fb316fdc96d9b42b09d5d87a971a4ca671e227136fd52e616",
+    "seqno": 4,
+    "tag": "signature"
+}
+
+with the aforementioned key, yielding the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG v1
+Comment: GPGTools - https://gpgtools.org
+
+owFVUn1QFVUU5xliIl/l5IgyQCvaqAyzd/fu3d0njsEjMYYcQ1S09HX37V1YPt7C
+ewuI+BoLoYGGCkPFaBDMnhp+oEwpfhRQAmOh2GADGgxDQ40ClmZq0li7ZB/ev869
+53d+5/c7574X+ISPv+Xy0rvHh7yN8Zavr0s+qy/8DospSZOLKGsx5chWiVM3IyfO
+IZSVyiJFEnaTGFWLdGoyicl0Rz7CRFMFxOVWNaeBomNgDACUJ9rEm9WK6kwnrlyX
+apJRhMUECkSCiFUkRiGygjBEvCAD1gglQGiMsAQZgzNDc+uPtaUmOe2qbLwmADZh
+OYoHL9BxKC5+Ep8/mQAcESDPAwUKikwrEs0wrAPziCWIIJGmTaCbuP715HKaWnOI
+Kyub2F2aNunYoatmGkCaEwBtsBlqsDvDKICKwiIH5AkPacIqhBU4qIg0K2JgBCzG
+vMzQnMIjhvCYo5FAOAaLkOUQ4BnEyoJMIGB5RQaQgYYmhhMZhWFZoxVUGIgRLYkI
+KrTMYwYAUYYcQ6BD5BUR0UBUTPlukufUKCsjijz0mFdXgeogpmxzYo+M5WCd5LtN
+ezEOLceoynVpuubQso1chq7nuq2mbb0o1wQXEsnuPvw3j11SnbKxsv8vFRjQx0ci
+iiiaIptzVRexqyaC45FAG8dsRAoMTh6wAnAgRuIIz0nGslmAFNkhIlk01ivRoszJ
+Ao9FHmDowIgHhGGMGgNjOEYA/WcUGjpxukHpVtOdWM93EcpTPiXM18fi7+M3dYr5
+a338p4f885W7nwt+uGT+2QVi2vqUjI7QbzvWNJZX7utP9dtWcY6ubzz3htqc/duZ
+0bGW0bQtu2sutq07fepee/itHyeUodiNC2/0zTj6sm3g0ocrD+Rc/TlrxcZDCbP5
+8lWbGiJ6yhPDm2999WtdKDekTxk8e6Bu/qtpt4+0nk7q8d57dofND/fFtllmp3It
+Fcv2zxqIHy+rP391Wp7T+uTtgddX2qpS6UVhJQsF7Y47fE7btpP68y2fJcbObFrc
+3NEa0f9ddYp3e+Di2voZgZao9SNfbs3fu+npAuVQzYN3qL2ldPu+3viupdqf0UFB
+Zf5ZV+7OOzE/b8vNxJ6Aki8qKW9H6kHPWrFshm9YZ0thd3TAM6UZvg3H3+aSZo40
+VwTOsS+zrdlz7ehhtehais9y/ey+9iWd3SMb5xQHgGM/1MWNTvQNeu4H1+7eNlZd
+Wroj3PnaGX829lPc+U18d6Ij5sXNwy+deCvq2sHIm3FP3T9UuTQ9c1xPaj7GPGCa
+Npz6xXskIDEtNznkUiventm17pPCnbt6h1Wt5OTKnPGdw+o5PPV6hDZ3bnAPPVFq
+o1M7mq54C2xV71Khq6obfT/62JW8dp3t4bzaaefHLBE/RZUXnri6f/Wd5OzLN4L8
+mr6/wCwaPbhVuMhU/OGpsVSONVg7cJn16MOTexLtx2s39IcENL3ygdIdWZ76+ftV
+gd7ps7p2rVgw+GYv/gs=
+=nOxj
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/kern
+
+==================================================================

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://mateuskern.com/theme/css/style.less">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="stylesheet" type="text/css" href="https://mateuskern.com/theme/css/style.css">
+  <link rel="stylesheet" type="text/css" href="https://mateuskern.com/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=PT+Sans|PT+Serif|PT+Mono">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Mateus Kern">
+  <meta name="description" content="Posts and writings by Mateus Kern">
+
+  <link href="https://mateuskern.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Mateus Kern Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    Mateus Kern
+&ndash; Create your personal wiki with Simiki  </title>
+
+
+<script type="text/javascript">
+    window.heap=window.heap||[],heap.load=function(t,e){window.heap.appid=t,window.heap.config=e;var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.heapanalytics.com/js/heap.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(t){return function(){heap.push([t].concat(Array.prototype.slice.call(arguments,0)))}},p=["clearEventProperties","identify","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+	heap.load('251809452');
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="https://mateuskern.com">
+        <img src="https://mateuskern.com/theme/images/logo.png" alt="logo">
+      </a>
+      <h2><a href="https://mateuskern.com">Mateus Kern</a></h2>
+      <p>python developer & sysadmin</p>
+      <ul>
+        <li><a href="https://mateuskern.com/pages/about.html">About</a></li>
+        <li><a href="https://mateuskern.com/pages/contact.html">Contact</a></li>
+        <li><a href="https://mateuskern.com/pages/hire-me.html">Hire me</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <p>
+      <a href="https://mateuskern.com">Index</a> &brvbar; <a href="https://mateuskern.com/archives.html">Archives</a>
+      &brvbar; <a href="https://mateuskern.com/feeds/all.atom.xml">Atom</a>
+      </p>
+    </header>
+
+<article>
+  <div class="article_title">
+    <h3><a href="https://mateuskern.com/personal-wiki.html">Create your personal wiki with Simiki</a></h3>
+  </div>
+  <div class="article_text">
+    <p>I wanted to create a wiki to document my research/studyings/experiments for
+future refereces and share it with the internet.</p>
+<p>My requeriments for the software that would 'run' the wiki was that it has to
+be simple - no access control, no database, no version history on the page and
+one file configuration -, generate static html and with active develoment.
+Simiki fill all this requirments and with a bonus: It's written in python!</p>
+<p>So lets create the wiki:</p>
+<p>Install simiki it's as simple as:</p>
+<pre class="code bash literal-block">
+pip install simiki <span class="c"># add sudo to the begining if you do not use virtualenv</span>
+</pre>
+<p>To create the wiki, you simple run the command above on the path that the files
+will live:</p>
+<pre class="code bash literal-block">
+simiki init
+</pre>
+<p>It will copy a few sample files to your current path, the configuration file:
+<em>_config.yml</em>, a sample page: <em>content/intro/gettingstarted.md</em>, a fabric file:
+<em>fabfile.py</em> to easy generate/preview/deploy the site and the <em>theme</em> folder
+where the templates lives.</p>
+<p>Beside the options already in the configuration file, one worth mentiong is
+the root one, that allows you to change the root folder, eg: you would like to
+host your wiki on the url: example.com/wiki, you simple change the <em>root</em> option to:</p>
+<pre class="code yaml literal-block">
+<span class="l-Scalar-Plain">root</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/wiki</span>
+</pre>
+<p>To create pages is simple as running the following command:</p>
+<pre class="code bash literal-block">
+simiki new -t <span class="s2">&quot;Title&quot;</span> -c category
+</pre>
+<p>Or just create a file folowing this path: <em>content/$category/filname.md:</em>, and
+add the title and date to file, following this:</p>
+<pre class="code literal-block">
+-------
+titile: &quot;Title&quot;
+date: 2014-12-31 00:00
+-------
+</pre>
+<p>I also modified the fabric file to add a function that auto-regenerate the html
+if any modification happens on the <em>content/</em> folder, so I will always have a
+local version, that will be served by apache and just a cronjob is need to
+push the changes to the public wiki.</p>
+<pre class="code python literal-block">
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">watchdog.observers</span> <span class="kn">import</span> <span class="n">Observer</span>
+<span class="kn">from</span> <span class="nn">watchdog.events</span> <span class="kn">import</span> <span class="n">FileSystemEventHandler</span>
+
+
+<span class="k">class</span> <span class="nc">Handler</span><span class="p">(</span><span class="n">FileSystemEventHandler</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">on_modified</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">g</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">l</span><span class="p">():</span>
+    <span class="n">event_handler</span> <span class="o">=</span> <span class="n">Handler</span><span class="p">()</span>
+    <span class="n">observer</span> <span class="o">=</span> <span class="n">Observer</span><span class="p">()</span>
+    <span class="n">observer</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">event_handler</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">'content/'</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">observer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyboardInterrupt</span><span class="p">,</span> <span class="ne">SystemExit</span><span class="p">):</span>
+        <span class="n">observer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="n">observer</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+</pre>
+
+  </div>
+  <div class="article_meta">
+    <p>Posted on: Thu 30 December 2010</p>
+    <p>Category: <a href="https://mateuskern.com/category/misc.html">misc</a>
+    </p>
+  </div>
+
+
+</article>
+
+
+    <div id="ending_message">
+      <p>(cc) by-nc-sa Mateus Kern. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Theme by Giulio Fidente on <a href="https://github.com/gfidente/pelican-svbhack" target="_blank">github</a>. .</p>
+    </div>
+  </main>
+</body>
+</html>

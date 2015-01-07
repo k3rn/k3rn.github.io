@@ -17,10 +17,11 @@
 
   <link href="https://mateuskern.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Mateus Kern Atom" />
 
+<meta name="keywords" content="debian, packaging, repository">
 
   <title>
     Mateus Kern
-  </title>
+&ndash; Packaging &amp; Repository  </title>
 
 
 <script type="text/javascript">
@@ -55,21 +56,43 @@
 
 <article>
   <div class="article_title">
-    <h3><a href="https://mateuskern.com/personal-wiki.html">Create your personal wiki with Simiki</a></h3>
+    <h3><a href="https://mateuskern.com/drafts/packaging-repos-debian.html">Packaging &amp; Repository</a></h3>
   </div>
   <div class="article_text">
-    <p>I wanted to create a wiki to document my research/studyings/experiments for
-future refereces and share it with the internet.</p>
-<p>My requeriments for the software that would 'run' the wiki was that it has to
-be simple - no access control, no database, no version history on the page and ...</p>
+    <!-- Comment ? -->
+<p>You may want to create a package for various reasons: to distribute your
+software publicly, to use a version that is not available on the repositories
+(for being newer or with a special set of features) or to deploy your
+application.</p>
+<p>With pbuilder you can build your package in a insolate enviroment, ensuring that
+you specified the right build dependencies in <code>debian/control</code>. pbuilder
+also has hooks, that enables to automaticly run tests, such as one that ensures
+that the package's dependecies are satisfied and that it can be
+installed/removed/purged without causing erros and lintian that will dissects
+the package and try to find bugs and <a class="reference external" href="https://www.debian.org/doc/debian-policy/">policy</a> violations.</p>
+<p>To create, build and sign the package you will need to install the following:</p>
+<pre class="code bash literal-block">
+<span class="c"># apt-get install dh-make pbuilder gnupg rng-tools</span>
+</pre>
+<p>Let's generate the GPG key:</p>
+<pre class="code bash literal-block">
+<span class="nv">$ </span>sudo rngd -r /dev/urandom
+<span class="nv">$ </span>gpg --gen-key
+</pre>
+<p>The first command will create a source of entropy, the second will generate the
+key. You can use the default options.</p>
+
   </div>
+  <div class="article_meta">
+    <p>Posted on: Mon 25 August 2014</p>
+    <p>Category: <a href="https://mateuskern.com/category/sysadmin.html">sysadmin</a>
+ &ndash; Tags:
+      <a href="https://mateuskern.com/tag/debian.html">debian</a>,      <a href="https://mateuskern.com/tag/packaging.html">packaging</a>,      <a href="https://mateuskern.com/tag/repository.html">repository</a>    </p>
+  </div>
+
+
 </article>
 
-<footer>
-<div id="paginator">
-
-</div>
-</footer>
 
     <div id="ending_message">
       <p>(cc) by-nc-sa Mateus Kern. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Theme by Giulio Fidente on <a href="https://github.com/gfidente/pelican-svbhack" target="_blank">github</a>. .</p>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Mateus Kern</title><link href="https://mateuskern.com/" rel="alternate"></link><link href="https://mateuskern.com/feeds/misc.atom.xml" rel="self"></link><id>https://mateuskern.com/</id><updated>2010-12-30T00:00:00-02:00</updated><entry><title>Create your personal wiki with Simiki</title><link href="https://mateuskern.com/personal-wiki.html" rel="alternate"></link><updated>2010-12-30T00:00:00-02:00</updated><author><name>Mateus Kern</name></author><id>tag:mateuskern.com,2010-12-30:personal-wiki.html</id><summary type="html">&lt;p&gt;I wanted to create a wiki to document my research/studyings/experiments for
+future refereces and share it with the internet.&lt;/p&gt;
+&lt;p&gt;My requeriments for the software that would 'run' the wiki was that it has to
+be simple - no access control, no database, no version history on the page and
+one file configuration -, generate static html and with active develoment.
+Simiki fill all this requirments and with a bonus: It's written in python!&lt;/p&gt;
+&lt;p&gt;So lets create the wiki:&lt;/p&gt;
+&lt;p&gt;Install simiki it's as simple as:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+pip install simiki &lt;span class="c"&gt;# add sudo to the begining if you do not use virtualenv&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;To create the wiki, you simple run the command above on the path that the files
+will live:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+simiki init
+&lt;/pre&gt;
+&lt;p&gt;It will copy a few sample files to your current path, the configuration file:
+&lt;em&gt;_config.yml&lt;/em&gt;, a sample page: &lt;em&gt;content/intro/gettingstarted.md&lt;/em&gt;, a fabric file:
+&lt;em&gt;fabfile.py&lt;/em&gt; to easy generate/preview/deploy the site and the &lt;em&gt;theme&lt;/em&gt; folder
+where the templates lives.&lt;/p&gt;
+&lt;p&gt;Beside the options already in the configuration file, one worth mentiong is
+the root one, that allows you to change the root folder, eg: you would like to
+host your wiki on the url: example.com/wiki, you simple change the &lt;em&gt;root&lt;/em&gt; option to:&lt;/p&gt;
+&lt;pre class="code yaml literal-block"&gt;
+&lt;span class="l-Scalar-Plain"&gt;root&lt;/span&gt;&lt;span class="p-Indicator"&gt;:&lt;/span&gt; &lt;span class="l-Scalar-Plain"&gt;/wiki&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;To create pages is simple as running the following command:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+simiki new -t &lt;span class="s2"&gt;&amp;quot;Title&amp;quot;&lt;/span&gt; -c category
+&lt;/pre&gt;
+&lt;p&gt;Or just create a file folowing this path: &lt;em&gt;content/$category/filname.md:&lt;/em&gt;, and
+add the title and date to file, following this:&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;
+-------
+titile: &amp;quot;Title&amp;quot;
+date: 2014-12-31 00:00
+-------
+&lt;/pre&gt;
+&lt;p&gt;I also modified the fabric file to add a function that auto-regenerate the html
+if any modification happens on the &lt;em&gt;content/&lt;/em&gt; folder, so I will always have a
+local version, that will be served by apache and just a cronjob is need to
+push the changes to the public wiki.&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;time&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;watchdog.observers&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Observer&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;watchdog.events&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;FileSystemEventHandler&lt;/span&gt;
+
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Handler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FileSystemEventHandler&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;on_modified&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;event&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;l&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="n"&gt;event_handler&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Handler&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;observer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Observer&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;observer&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;schedule&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;event_handler&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'content/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;recursive&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;observer&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ne"&gt;KeyboardInterrupt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ne"&gt;SystemExit&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;observer&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stop&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;observer&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;
+</summary></entry></feed>
