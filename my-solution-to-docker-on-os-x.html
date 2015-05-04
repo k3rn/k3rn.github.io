@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://mateuskern.com/theme/css/style.less">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="stylesheet" type="text/css" href="https://mateuskern.com/theme/css/style.css">
+  <link rel="stylesheet" type="text/css" href="https://mateuskern.com/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=PT+Sans|PT+Serif|PT+Mono">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Mateus Kern">
+  <meta name="description" content="Posts and writings by Mateus Kern">
+  <meta name="p:domain_verify" content="fde7d9e45b062cc12f8090b0c492fc95"/>
+
+  <link href="https://mateuskern.com/feeds/all-atom.xml" type="application/atom+xml" rel="alternate" title="Mateus Kern Atom" />
+
+<meta name="keywords" content="docker, osx, vmware fusion, containers, sysadmin, coreos, linux">
+
+  <title>
+    Mateus Kern
+&ndash; My solution to Docker on OS X  </title>
+
+
+<script type="text/javascript">
+    window.heap=window.heap||[],heap.load=function(t,e){window.heap.appid=t,window.heap.config=e;var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.heapanalytics.com/js/heap.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(t){return function(){heap.push([t].concat(Array.prototype.slice.call(arguments,0)))}},p=["clearEventProperties","identify","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+	heap.load('251809452');
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="https://mateuskern.com">
+        <img src="https://mateuskern.com/theme/images/logo.png" alt="logo">
+      </a>
+      <h2><a href="https://mateuskern.com">Mateus Kern</a></h2>
+      <p>python developer & sysadmin</p>
+      <ul>
+      </ul>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <p>
+      <a href="https://mateuskern.com">Index</a> &brvbar; <a href="https://mateuskern.com/archives.html">Archives</a>
+      &brvbar; <a href="https://mateuskern.com/feeds/all-atom.xml">Atom</a>
+      </p>
+    </header>
+
+<article>
+  <div class="article_title">
+    <h3><a href="https://mateuskern.com/my-solution-to-docker-on-os-x.html">My solution to Docker on OS X</a></h3>
+  </div>
+  <div class="article_text">
+    <p><cite>Note: Through the post I use a VM on my local machine on VMware Fusion but
+you can you use barebone server, a VPS/Cloud Server somewhere or other
+hypervisor. Just read the CoreOS documentation on how to get the OS running on
+your pariculary setup.</cite></p>
+<p>I wanted to use Docker on a VM, but not deal with the hassle of editing/coping
+my Dockerfiles to the VM. I could use docker2boot, but it uses VirtualBox and
+I don't like it, so I did it <a class="reference external" href="https://www.youtube.com/watch?v=3Z-jnXwpuRo">my
+way</a>.</p>
+<p>To do that, download the CoreOS <a class="reference external" href="https://coreos.com/docs/running-coreos/platforms/vmware/">stable image for the VMware
+plataform</a>.,
+unzip it and put the <code>.vmdk</code> and <code>.vmx</code> on a directory named
+<cite>docker.vmware</cite> (just to get a proper icon) and rename both files to coreos
+(but keep the extensions). And don't throw away the
+<code>insecure_ssh_key</code> file yet.</p>
+<p>The default image comes set with 1024 MB of RAM and 1 cpu core if you want
+more, just set the options <code>memsize</code> and <code>numvcpus</code> inside the
+<cite>.vmx</cite> file to your needs, I set the memory to <cite>4096</cite> (just in case) and the
+CPUs core to <cite>2</cite>. Or you can open the VM with the GUI interface and change
+there.</p>
+<p>After that boot the VM and add your ssh key and remove the insecure one,
+to get the IP of the machine just press the enter key on the VM window.</p>
+<pre class="code bash literal-block">
+cat ~/.ssh/id_rsa.pub <span class="p">|</span> ssh core&#64;10.0.1.81 -i /path/to/insecure_ssh_key <span class="se">\
+</span>update-ssh-keys -a user
+ssh core&#64;10.0.1.81 update-ssh-keys -D oem
+</pre>
+<p>Then generate the keys to be able to communicate with the server. Just answer
+the questions and use strong passwords, but remember that the certificate
+accepts only passwords up to 20 characters.
+Use * to the FQDN field if you don't have a domain set to the VM.
+You also can use any domain you like and set it you the IP of the VM on your
+/etc/hosts.</p>
+<pre class="code bash literal-block">
+<span class="c"># Create some directories to keep everything organized.
+</span>mkdir -p certs/<span class="o">{</span>client,server<span class="o">}</span> <span class="o">&amp;&amp;</span> <span class="nb">cd </span>certs
+<span class="c"># Generate the CA
+</span>openssl genrsa -des3 -out ca-key.pem
+openssl req -new -x509 -days <span class="m">3650</span> -key ca-key.pem -out ca.pem
+<span class="c"># Generate the Server certificate and key.
+</span>openssl genrsa -des3 -out server/key.pem
+openssl req -new -key server/key.pem -out server/server.csr
+openssl x509 -req -days <span class="m">365</span> -in server/server.csr -CA ca.pem <span class="se">\
+</span>    -CAKey ca-key.pem -CAcreateserial -out server/cert.pem
+
+<span class="c"># Generate the Client certificate and key.
+</span>openssl genrsa -des3 -out client/key.pem
+openssl req -new -key client/key.pem -out client/client.csr
+cho <span class="nv">extendedKeyUsage</span> <span class="o">=</span> clientAuth &gt; extfile.cnf
+openssl x509 -req -days <span class="m">365</span> -in client/client.csr -CA ca.key -CAkey <span class="se">\
+</span>    ca-key.pem -CAcreateserial -out client/cert.pem -extfile extfile.cnf
+
+<span class="c"># Remove the passwords of the keys, so we don't need to enter it every
+# time the VM boots.
+</span>openssl rsa -in server/key.pem -out server-key.pem
+openssl rsa -in client/key.pem -out client-key.pem
+
+<span class="c"># Zip the files that the docker daemon needs.
+</span>zip docker.zip ca.pem server-key.pem server/server-cert.pem
+</pre>
+<p>Because I am <a class="reference external" href="http://www.thegeekstuff.com/2011/07/lazy-sysadmin/">lazy</a>, I
+created a <a class="reference external" href="https://github.com/k3rn/ansible-coreos">Ansible playbook</a>, so I
+don't need do configure it the next time I deploy a CoreOS VM.</p>
+<p>If you don't want to/do not know how to use Ansible - you should learn it,
+because it's awesome - you have to:</p>
+<ul class="simple">
+<li>Stop and disable the Docker service:</li>
+</ul>
+<pre class="code bash literal-block">
+systemctl stop docker
+systemctl disable docker
+</pre>
+<ul class="simple">
+<li>Create the file <code>/etc/systemd/system/docker.service</code> with the following content:</li>
+</ul>
+<pre class="code literal-block">
+[Unit]
+Description=Docker Application Container Engine
+Documentation=http://docs.docker.io
+
+[Service]
+ExecStartPre=/bin/mount --make-rprivate /
+# Run docker but don't have docker automatically restart
+# containers. This is a job for systemd and unit files.
+ExecStart=/usr/bin/docker -d --tlsverify --tlscacert=/var/ssl/ca.pem
+--tlscert=/var/ssl/server-cert.pem --tlskey=/var/ssl/server-key.pem -H fd://
+-H 0.0.0.0:4243
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+<ul class="simple">
+<li>Upload the the zip file and unpack it's content to <code>/var/ssl/</code>.</li>
+<li>Start and enable the docker service:</li>
+</ul>
+<pre class="code bash literal-block">
+systemctl start docker
+systemctl <span class="nb">enable </span>docker
+</pre>
+<p>To configure the client, you need to install the same of version of Docker
+that your CoreOS is running, at the time I am writing this the CoreOS
+stable version is 633.1.0 and ships with Docker 1.5, but the most recent
+version of Docker is 1.5. To install this the version 1.5 of Docker on OS X
+you can use homebrew[link]:</p>
+<pre class="code bash literal-block">
+brew tap homebrew/versions
+brew install docker150
+</pre>
+<p>Copy the client certificate and key and CA cert to <cite>~/.docker/</cite></p>
+<pre class="code bash literal-block">
+cp ca.pem ~/.docker/ca.pem
+cp client/cert.pem ~/.docker/cert.pem
+cp cleint-key.pem ~/.docker.pem
+</pre>
+<p>Set DOCKER_HOST enviroment variable to your VM and add it to your shell
+configuration file:</p>
+<pre class="code bash literal-block">
+<span class="c"># For bourne shell compatible shells use:
+</span><span class="nb">export </span><span class="nv">DOCKER_HOST</span><span class="o">=</span>tcp://your.coreos.host:4243
+
+<span class="c"># For the Fish shell use:
+</span><span class="nb">set</span> -x DOCKER_HOST <span class="s1">'tcp://oyur.coreos.host:4243'</span>
+</pre>
+<p>Now you car run the following command to see if everything works:</p>
+<pre class="code bash literal-block">
+docker --tlsverify info
+</pre>
+<p>It can be annoying to run every command with the flag <code>--tlsverify</code>, you
+can add an alias to your shell config file:</p>
+<pre class="code bash literal-block">
+<span class="c"># For bourne shell compatible shells use:
+</span><span class="nb">alias </span><span class="nv">docker</span><span class="o">=</span>docker --tlsverify
+
+<span class="c"># For the fish shell:
+</span><span class="nb">alias </span>docker <span class="s2">&quot;docker --tlsverify&quot;</span>
+</pre>
+<p>References:</p>
+<p>[1] <a class="reference external" href="http://blog.jameskyle.org/2014/04/coreos-docker-remote-api-tls/">Configuring Docker Remote API with TLS on CoreOS</a>.</p>
+
+  </div>
+  <div class="article_meta">
+    <p>Posted on: Thu 30 April 2015</p>
+    <p>Category: <a href="https://mateuskern.com/category/sysadmin.html">sysadmin</a>
+ &ndash; Tags:
+      <a href="https://mateuskern.com/tag/docker.html">docker</a>,      <a href="https://mateuskern.com/tag/osx.html">osx</a>,      <a href="https://mateuskern.com/tag/vmware-fusion.html">vmware fusion</a>,      <a href="https://mateuskern.com/tag/containers.html">containers</a>,      <a href="https://mateuskern.com/tag/sysadmin.html">sysadmin</a>,      <a href="https://mateuskern.com/tag/coreos.html">coreos</a>,      <a href="https://mateuskern.com/tag/linux.html">linux</a>    </p>
+  </div>
+
+
+</article>
+
+
+    <div id="ending_message">
+      <p>(cc) by-nc-sa Mateus Kern. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Theme by Giulio Fidente on <a href="https://github.com/gfidente/pelican-svbhack" target="_blank">github</a>. .</p>
+    </div>
+  </main>
+</body>
+</html>
