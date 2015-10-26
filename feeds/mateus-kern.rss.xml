@@ -110,7 +110,7 @@ brew install docker150
 &lt;pre class="code bash literal-block"&gt;
 cp ca.pem ~/.docker/ca.pem
 cp client/cert.pem ~/.docker/cert.pem
-cp cleint-key.pem ~/.docker.pem
+cp client-key.pem ~/.docker.pem
 &lt;/pre&gt;
 &lt;p&gt;Set DOCKER_HOST enviroment variable to your VM and add it to your shell
 configuration file:&lt;/p&gt;
