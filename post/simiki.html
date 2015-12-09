@@ -1,0 +1,131 @@
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="Create your personal wiki with Simiki">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>Create your personal wiki with Simiki</title>
+
+		<link rel="stylesheet" href="https://mateuskern.com/css/style.css" />
+		
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="header">
+				<div id="name">
+					<a href="https://mateuskern.com/">
+						<h1>Mateus Kern</h1>
+					</a>
+					<h3>python developer<h3>
+				</div>
+				<div id="contact">
+					<span>kern at mateuskern.com</span>
+					<span>PGP: 0x0A6AB42</span>
+					<span><a href="https://twitter.com/_k3rn">@_k3rn</a></span>
+				</div>
+			</div>
+
+<div id="navbar">
+	<ol>
+	
+			<li><a href="/page/about.html">About</a></li>
+	
+			<li><a href="/page/contact.html">Contact</a></li>
+	
+			<li><a href="/page/hire.html">Hire me</a></li>
+	
+	</ol>
+</div>
+
+<div id="post">
+	<h1 class="title">Create your personal wiki with Simiki </h1>
+	<p>I wanted to create a wiki to document my research/studyings/experiments
+for future refereces and share it with the internet.</p>
+
+<p>My requeriments for the software that would &lsquo;run&rsquo; the wiki was that it
+has to be simple - no access control, no database, no version history on
+the page and one file configuration -, generate static html and with
+active develoment. Simiki fill all this requirments and with a bonus:
+It&rsquo;s written in python!</p>
+
+<p>So lets create the wiki:</p>
+
+<p>Install simiki it&rsquo;s as simple as:</p>
+
+<pre><code class="language-sourceCode bash">pip install simiki # add sudo to the begining if you do not use virtualenv
+</code></pre>
+
+<p>To create the wiki, you simple run the command above on the path that
+the files will live:</p>
+
+<pre><code class="language-sourceCode bash">simiki init
+</code></pre>
+
+<p>It will copy a few sample files to your current path, the configuration
+file: <em>_config.yml</em>, a sample page: <em>content/intro/gettingstarted.md</em>,
+a fabric file: <em>fabfile.py</em> to easy generate/preview/deploy the site and
+the <em>theme</em> folder where the templates lives.</p>
+
+<p>Beside the options already in the configuration file, one worth mentiong
+is the root one, that allows you to change the root folder, eg: you
+would like to host your wiki on the url: example.com/wiki, you simple
+change the <em>root</em> option to:</p>
+
+<pre><code class="language-sourceCode yaml">root: /wiki
+</code></pre>
+
+<p>To create pages is simple as running the following command:</p>
+
+<pre><code class="language-sourceCode bash">simiki new -t &quot;Title&quot; -c category
+</code></pre>
+
+<p>Or just create a file folowing this path:
+<em>content/\$category/filname.md:</em>, and add the title and date to file,
+following this:</p>
+
+<pre><code class="language-sourceCode">-------
+titile: &quot;Title&quot;
+date: 2014-12-31 00:00
+-------
+</code></pre>
+
+<p>I also modified the fabric file to add a function that auto-regenerate
+the html if any modification happens on the <em>content/</em> folder, so I will
+always have a local version, that will be served by apache and just a
+cronjob is need to push the changes to the public wiki.</p>
+
+<pre><code class="language-sourceCode python">import time
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+
+
+class Handler(FileSystemEventHandler):
+    def on_modified(self, event):
+        g()
+
+
+def l():
+    event_handler = Handler()
+    observer = Observer()
+    observer.schedule(event_handler, path='content/', recursive=True)
+    observer.start()
+
+    try:
+        while True:
+            time.sleep(1)
+    except (KeyboardInterrupt, SystemExit):
+        observer.stop()
+    observer.join()
+</code></pre>
+
+</div>
+			<div id="footer">
+				<span>
+					This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+				</span>
+			</div>
+		</div>
+	</body>
+</html>
+

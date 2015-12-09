@@ -1,0 +1,220 @@
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="My solution to Docker on OS X">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>My solution to Docker on OS X</title>
+
+		<link rel="stylesheet" href="https://mateuskern.com/css/style.css" />
+		
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="header">
+				<div id="name">
+					<a href="https://mateuskern.com/">
+						<h1>Mateus Kern</h1>
+					</a>
+					<h3>python developer<h3>
+				</div>
+				<div id="contact">
+					<span>kern at mateuskern.com</span>
+					<span>PGP: 0x0A6AB42</span>
+					<span><a href="https://twitter.com/_k3rn">@_k3rn</a></span>
+				</div>
+			</div>
+
+<div id="navbar">
+	<ol>
+	
+			<li><a href="/page/about.html">About</a></li>
+	
+			<li><a href="/page/contact.html">Contact</a></li>
+	
+			<li><a href="/page/hire.html">Hire me</a></li>
+	
+	</ol>
+</div>
+
+<div id="post">
+	<h1 class="title">My solution to Docker on OS X </h1>
+	<blockquote>
+<p>This post is outdated and I will update it in the near future.</p>
+</blockquote>
+
+<p>Note: Through the post I use a VM on my local machine on VMware Fusion but
+you can you use barebone server, a VPS/Cloud Server somewhere or other
+hypervisor. Just read the CoreOS documentation on how to get the OS running on
+your pariculary setup.</p>
+
+<p>I wanted to use Docker on a VM, but not deal with the hassle of
+editing/coping my Dockerfiles to the VM. I could use docker2boot, but it
+uses VirtualBox and I don&rsquo;t like it, so I did it <a href="https://www.youtube.com/watch?v=3Z-jnXwpuRo">my
+way</a>.</p>
+
+<p>To do that, download the CoreOS <a href="https://coreos.com/docs/running-coreos/platforms/vmware/">stable image for the VMware
+plataform</a>.,
+unzip it and put the <code>.vmdk</code> and <code>.vmx</code> on a directory named docker.vmware
+(just to get a proper icon) and rename both files to coreos (but keep the
+extensions). And don&rsquo;t throw away the <code>insecure_ssh_key</code> file yet.</p>
+
+<p>The default image comes set with 1024 MB of RAM and 1 cpu core if you
+want more, just set the options <code>memsize</code> and <code>numvcpus</code> inside the .vmx file
+to your needs, I set the memory to 4096 (just in case) and the CPUs core to 2.
+Or you can open the VM with the GUI interface and change there.</p>
+
+<p>After that boot the VM and add your ssh key and remove the insecure one,
+to get the IP of the machine just press the enter key on the VM window.</p>
+
+<div class="highlight"><pre><code class="language-shell" data-lang="shell">	cat ~/.ssh/id_rsa.pub <span class="p">|</span> ssh core@10.0.1.81 -i /path/to/insecure_ssh_key <span class="se">\</span>
+	update-ssh-keys -a user
+	ssh core@10.0.1.81 update-ssh-keys -D oem
+</code></pre></div>
+
+
+<p>Then generate the keys to be able to communicate with the server. Just
+answer the questions and use strong passwords, but remember that the
+certificate accepts only passwords up to 20 characters. Use * to the
+FQDN field if you don&rsquo;t have a domain set to the VM. You also can use
+any domain you like and set it you the IP of the VM on your /etc/hosts.</p>
+
+<div class="highlight"><pre><code class="language-shell" data-lang="shell">	<span class="c"># Create some directories to keep everything organized.</span>
+	mkdir -p certs/<span class="o">{</span>client,server<span class="o">}</span> <span class="o">&amp;&amp;</span> <span class="nb">cd </span>certs
+	<span class="c"># Generate the CA</span>
+	openssl genrsa -des3 -out ca-key.pem
+	openssl req -new -x509 -days <span class="m">3650</span> -key ca-key.pem -out ca.pem
+	<span class="c"># Generate the Server certificate and key.</span>
+	openssl genrsa -des3 -out server/key.pem
+	openssl req -new -key server/key.pem -out server/server.csr
+	openssl x509 -req -days <span class="m">365</span> -in server/server.csr -CA ca.pem <span class="se">\</span>
+		-CAKey ca-key.pem -CAcreateserial -out server/cert.pem
+
+	<span class="c"># Generate the Client certificate and key.</span>
+	openssl genrsa -des3 -out client/key.pem
+	openssl req -new -key client/key.pem -out client/client.csr
+	cho <span class="nv">extendedKeyUsage</span> <span class="o">=</span> clientAuth &gt; extfile.cnf
+	openssl x509 -req -days <span class="m">365</span> -in client/client.csr -CA ca.key -CAkey <span class="se">\</span>
+		ca-key.pem -CAcreateserial -out client/cert.pem -extfile extfile.cnf
+
+	<span class="c"># Remove the passwords of the keys, so we don&#39;t need to enter it every</span>
+	<span class="c"># time the VM boots.</span>
+	openssl rsa -in server/key.pem -out server-key.pem
+	openssl rsa -in client/key.pem -out client-key.pem
+
+	<span class="c"># Zip the files that the docker daemon needs.</span>
+	zip docker.zip ca.pem server-key.pem server/server-cert.pem
+</code></pre></div>
+
+
+<p>Because I am <a href="http://www.thegeekstuff.com/2011/07/lazy-sysadmin/">lazy</a>,
+I created a <a href="https://github.com/k3rn/ansible-coreos">Ansible playbook</a>,
+so I don&rsquo;t need do configure it the next time I deploy a CoreOS VM.</p>
+
+<p>If you don&rsquo;t want to/do not know how to use Ansible - you should learn
+it, because it&rsquo;s awesome - you have to:</p>
+
+<ul>
+<li>Stop and disable the Docker service:</li>
+</ul>
+
+<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	systemctl stop docker
+	systemctl disable docker
+</code></pre></div>
+</p>
+
+<ul>
+<li>Create the file <code>/etc/systemd/system/docker.service</code> with the following
+content:</li>
+</ul>
+
+<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	<span class="o">[</span>Unit<span class="o">]</span>
+	<span class="nv">Description</span><span class="o">=</span>Docker Application Container Engine
+	<span class="nv">Documentation</span><span class="o">=</span>http://docs.docker.io
+
+	<span class="o">[</span>Service<span class="o">]</span>
+	<span class="nv">ExecStartPre</span><span class="o">=</span>/bin/mount --make-rprivate /
+	<span class="c"># Run docker but don&#39;t have docker automatically restart</span>
+	<span class="c"># containers. This is a job for systemd and unit files.</span>
+	<span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/docker -d --tlsverify --tlscacert<span class="o">=</span>/var/ssl/ca.pem
+	--tlscert<span class="o">=</span>/var/ssl/server-cert.pem --tlskey<span class="o">=</span>/var/ssl/server-key.pem -H fd://
+	-H 0.0.0.0:4243
+
+	<span class="o">[</span>Install<span class="o">]</span>
+	<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</code></pre></div>
+</p>
+
+<ul>
+<li>Upload the the zip file and unpack it&rsquo;s content to <code>/var/ssl/</code></li>
+<li>Start and enable the docker service:</li>
+</ul>
+
+<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	systemctl start docker
+	systemctl <span class="nb">enable </span>docker
+</code></pre></div>
+</p>
+
+<p>To configure the client, you need to install the same of version of
+Docker that your CoreOS is running, at the time I am writing this the
+CoreOS stable version is 633.1.0 and ships with Docker 1.5, but the most
+recent version of Docker is 1.5. To install this the version 1.5 of
+Docker on OS X you can use homebrew[link]:</p>
+
+<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	brew tap homebrew/versions
+	brew install docker150
+</code></pre></div>
+</p>
+
+<p>Copy the client certificate and key and CA cert to ~/.docker/</p>
+
+<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	cp ca.pem ~/.docker/ca.pem
+	cp client/cert.pem ~/.docker/cert.pem
+	cp client-key.pem ~/.docker.pem
+</code></pre></div>
+</p>
+
+<p>Set DOCKER_HOST enviroment variable to your VM and add it to your shell
+configuration file:</p>
+
+<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	<span class="c"># For bourne shell compatible shells use:</span>
+	<span class="nb">export </span><span class="nv">DOCKER_HOST</span><span class="o">=</span>tcp://your.coreos.host:4243
+
+	<span class="c"># For the Fish shell use:</span>
+	<span class="nb">set</span> -x DOCKER_HOST <span class="s1">&#39;tcp://your.coreos.host:4243&#39;</span>
+</code></pre></div>
+</p>
+
+<p>Now you car run the following command to see if everything works:</p>
+
+<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	docker --tlsverify info
+</code></pre></div>
+</p>
+
+<p>It can be annoying to run every command with the flag
+<code>--tlsverify</code>, you can add an alias to your shell config file:</p>
+
+<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	<span class="c"># For bourne shell compatible shells use:</span>
+	<span class="nb">alias </span><span class="nv">docker</span><span class="o">=</span>docker --tlsverify
+
+	<span class="c"># For the fish shell:</span>
+	<span class="nb">alias </span>docker <span class="s2">&quot;docker --tlsverify&quot;</span>
+</code></pre></div>
+</p>
+
+<p>References:</p>
+
+<p>[1] <a href="http://blog.jameskyle.org/2014/04/coreos-docker-remote-api-tls/">Configuring Docker Remote API with TLS on
+CoreOS</a>.</p>
+
+</div>
+			<div id="footer">
+				<span>
+					This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+				</span>
+			</div>
+		</div>
+	</body>
+</html>
+

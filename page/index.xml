@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on Mateus Kern</title>
+    <link>https://mateuskern.com/page.html</link>
+    <description>Recent content in Pages on Mateus Kern</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Wed, 09 Dec 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://mateuskern.com/page.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>About</title>
+      <link>https://mateuskern.com/page/about.html</link>
+      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://mateuskern.com/page/about.html</guid>
+      <description>
+
+&lt;p&gt;Hello, I&amp;rsquo;m Kern curently I live in southern Brazil. I have interest in
+science fiction, right to privacy, security, freedom of information,
+international affairs, history, &lt;a href=&#34;https://last.fm/user/kernnerd&#34;&gt;music&lt;/a&gt;,
+&lt;a href=&#34;http://www.tvshowtime.com/kern&#34;&gt;television shows&lt;/a&gt;, astronomy, space
+exploration, warfare and woodworking.&lt;/p&gt;
+
+&lt;h2 id=&#34;professional:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;Professional&lt;/h2&gt;
+
+&lt;p&gt;I like planning, implementing and maintaining systems architecture with
+the help of tools that provide automation, monitoring and metrics. And
+building backend software, preferably with python.&lt;/p&gt;
+
+&lt;p&gt;If you have interest in hiring me, please see this &lt;a href=&#34;https://mateuskern.com/pages/hire-me.html&#34;&gt;page&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>https://mateuskern.com/page/contact.html</link>
+      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://mateuskern.com/page/contact.html</guid>
+      <description>&lt;p&gt;You can contact me through my email (&lt;a href=&#34;mailto:kern@mateuskern.com&#34;&gt;kern@mateuskern.com&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;Sometimes I am at Freenode/OFTC with the kern username.&lt;/p&gt;
+
+&lt;p&gt;My gpg key is available
+&lt;a href=&#34;http://pgp.mit.edu:11371/pks/lookup?op=get&amp;amp;search=0xD13DF6B1E0A6AB42&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you prefer to call, you can contact me at +55 (51) 9793-8559.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hire me</title>
+      <link>https://mateuskern.com/page/hire.html</link>
+      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://mateuskern.com/page/hire.html</guid>
+      <description>&lt;p&gt;Hello, my name is Mateus Kern and I am passionate about Unix-like system
+and I am looking for an entry level position (preferably remote), as
+System Administrator.&lt;/p&gt;
+
+&lt;p&gt;I have a good knowledge of Linux based operating system - specially the
+Debian family -, scripting with bourne shell (sh) and python, nginx
+webserver, and configuration management with Ansible. Also, I have
+knowledge in the netfilter framework.&lt;/p&gt;
+
+&lt;p&gt;Curently I&amp;rsquo;m studying Django and docker.&lt;/p&gt;
+
+&lt;p&gt;I have example of my coding at &lt;a href=&#34;https://github.com/k3rn&#34;&gt;github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you are interested in hiring me, please &lt;a href=&#34;mailto:kern@mateuskern.com&#34;&gt;send me a
+email&lt;/a&gt; or contact me through the number +55
+(51) 9793-8559.&lt;/p&gt;
+
+&lt;p&gt;You can download my resume
+&lt;a href=&#34;https://mateuskern.com/mateuskern-resume.pdf&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

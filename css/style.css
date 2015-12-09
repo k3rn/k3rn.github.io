@@ -1,0 +1,246 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+div#wrapper {
+	margin: 0 auto;
+	padding: 1em 1.4em 0 1.4em;
+	max-width: 900px;
+	min-height: 100px;
+	font-family: Georgia, Times, 'Times New Roman', serif;
+}
+
+div#header h1 {
+	font-size: 4em;
+}
+
+div#header h3 {
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 1.5em;
+}
+
+div#header a {
+	color: #000;
+	text-decoration: none;
+}
+
+div#header a:hover {
+	text-decoration: underline;
+}
+
+div#contact {
+	float: right;
+	display: block;
+	margin-top: 0.5em;
+}
+
+div#name {
+	float: left;
+}
+div#contact span {
+	display: block;
+	font-family: 'Courier New', Courier, monospace;
+
+}
+
+div#navbar {
+	width: 100%;
+	clear: both;
+	padding: 0.7em 0;
+	text-align: center;
+}
+
+div#navbar a {
+	font-size: 1.2em;
+	color: #000;
+}
+
+div#navbar li {
+	display: inline;
+	padding-right: 0.5em;
+}
+
+div#summary {
+	margin: 1em;
+	display: block;
+}
+
+div#index li {
+	display: block;
+	margin-top: 3em;
+}
+
+div#index li a {
+	color: #000;
+	font-size: 2.3em;
+}
+div#index li time {
+	font-size: 1.15rem;
+	text-align: right;
+	font-style: italic;
+	margin-left: 1em;
+}
+div#index span#readmore a {
+	font-size: 1.3rem;
+	text-align: right;
+	display: block;
+}
+div#summary {
+	font-size: 1.4rem;
+	text-align: justify;
+	text-indent: 1em;
+	line-height: 1.75;
+}
+
+/* Single css */
+div#post h1.title {
+	font-size: 3rem;
+	margin:0 1em;
+}
+
+div#post p {
+	font-size: 1.4rem;
+	text-align: justify;
+	text-indent: 1em;
+	line-height: 1.35;
+	margin-top: 1.2em;
+}
+div#post {
+	background-color: rgb(244,247,248);
+	padding: 1em;
+	font-size: 1.4rem;
+}
+
+/* <code> Section */
+code {
+	padding: 0.24em;
+	background-color: rgb(216,224,230);
+	font-family: Monaco, Consolas, monospace;
+	font-size: 1rem;
+}
+
+pre code {
+	padding: 0.8em;
+	display: block;
+	margin: 2em 0;
+}
+
+/* post formatation */
+
+div#post h1 {
+	font-size: 2.2rem;
+	font-weight: bold;
+	margin: 1em;
+}
+
+div#post h2 {
+	font-size: 1.8rem;
+	font-weight: bold;
+	margin: 0.8em;
+}
+
+div#post h3 {
+	font-size: 1.4rem;
+	font-weight: bold;
+	margin: 0.6em;
+}
+
+div#post em {
+	font-style: oblique;
+	font-weight: light;
+}
+
+div#post strong {
+	font-weight: bold;
+}
+
+div#post ol {
+	list-style-type: lower-roman;
+}
+
+div#post ul {
+	list-style-type: square;
+}
+
+div#post li {
+	margin-left: 4em;
+	line-height: 1.5;
+}
+
+div#post blockquote p {
+	margin-left: 5rem;
+	text-indent: 0em;
+	font-style: oblique;
+	background-color: rgb(243,245,247);
+	padding: 0.6rem;
+}
+
+div#post a {
+	color: #000;
+}
+
+div#post img {
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+	height: auto;
+}
+
+/* Footer */
+
+div#footer {
+	text-align: center;
+	margin: 5rem 0 1rem;
+}
+
+div#footer a {
+	color: #000;
+}
+
+div#notfound {
+	width: 100%;
+	font-size: 5rem;
+	text-align: center;
+	margin-top: 3rem;
+}
