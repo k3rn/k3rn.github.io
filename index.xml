@@ -11,10 +11,10 @@
     
     <item>
       <title>About</title>
-      <link>https://mateuskern.com/page/about.html</link>
+      <link>https://mateuskern.com/pages/about.html</link>
       <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://mateuskern.com/page/about.html</guid>
+      <guid>https://mateuskern.com/pages/about.html</guid>
       <description>
 
 &lt;p&gt;Hello, I&amp;rsquo;m Kern curently I live in southern Brazil. I have interest in
@@ -35,10 +35,10 @@ building backend software, preferably with python.&lt;/p&gt;
     
     <item>
       <title>Contact</title>
-      <link>https://mateuskern.com/page/contact.html</link>
+      <link>https://mateuskern.com/pages/contact.html</link>
       <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://mateuskern.com/page/contact.html</guid>
+      <guid>https://mateuskern.com/pages/contact.html</guid>
       <description>&lt;p&gt;You can contact me through my email (&lt;a href=&#34;mailto:kern@mateuskern.com&#34;&gt;kern@mateuskern.com&lt;/a&gt;).&lt;/p&gt;
 
 &lt;p&gt;Sometimes I am at Freenode/OFTC with the kern username.&lt;/p&gt;
@@ -52,10 +52,10 @@ building backend software, preferably with python.&lt;/p&gt;
     
     <item>
       <title>Hire me</title>
-      <link>https://mateuskern.com/page/hire.html</link>
+      <link>https://mateuskern.com/pages/hire-me.html</link>
       <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://mateuskern.com/page/hire.html</guid>
+      <guid>https://mateuskern.com/pages/hire-me.html</guid>
       <description>&lt;p&gt;Hello, my name is Mateus Kern and I am passionate about Unix-like system
 and I am looking for an entry level position (preferably remote), as
 System Administrator.&lt;/p&gt;
@@ -80,10 +80,10 @@ email&lt;/a&gt; or contact me through the number +55
     
     <item>
       <title>My solution to Docker on OS X</title>
-      <link>https://mateuskern.com/post/docker.html</link>
+      <link>https://mateuskern.com/my-solution-to-docker-on-os-x.html</link>
       <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://mateuskern.com/post/docker.html</guid>
+      <guid>https://mateuskern.com/my-solution-to-docker-on-os-x.html</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;This post is outdated and I will update it in the near future.&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -256,10 +256,10 @@ CoreOS&lt;/a&gt;.&lt;/p&gt;
     
     <item>
       <title>Create your personal wiki with Simiki</title>
-      <link>https://mateuskern.com/post/simiki.html</link>
+      <link>https://mateuskern.com/create-your-personal-wiki-with-simiki.html</link>
       <pubDate>Tue, 08 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://mateuskern.com/post/simiki.html</guid>
+      <guid>https://mateuskern.com/create-your-personal-wiki-with-simiki.html</guid>
       <description>&lt;p&gt;I wanted to create a wiki to document my research/studyings/experiments
 for future refereces and share it with the internet.&lt;/p&gt;
 
