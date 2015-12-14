@@ -8,7 +8,7 @@
 		<title>My solution to Docker on OS X</title>
 
 		<link rel="stylesheet" href="https://mateuskern.com/css/style.css" />
-		
+		<link rel="stylesheet" href="https://mateuskern.com/css/pygments.css" />
 		
 			<script type="text/javascript">
     window.heap=window.heap||[],heap.load=function(t,e){window.heap.appid=t,window.heap.config=e;var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+t+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(t){return function(){heap.push([t].concat(Array.prototype.slice.call(arguments,0)))}},p=["clearEventProperties","identify","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
@@ -75,7 +75,7 @@ Or you can open the VM with the GUI interface and change there.</p>
 <p>After that boot the VM and add your ssh key and remove the insecure one,
 to get the IP of the machine just press the enter key on the VM window.</p>
 
-<div class="highlight"><pre><code class="language-shell" data-lang="shell">	cat ~/.ssh/id_rsa.pub <span class="p">|</span> ssh core@10.0.1.81 -i /path/to/insecure_ssh_key <span class="se">\</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">	cat ~/.ssh/id_rsa.pub | ssh core@10.0.1.81 -i /path/to/insecure_ssh_key <span class="se">\</span>
 	update-ssh-keys -a user
 	ssh core@10.0.1.81 update-ssh-keys -D oem
 </code></pre></div>
@@ -87,22 +87,22 @@ certificate accepts only passwords up to 20 characters. Use * to the
 FQDN field if you don&rsquo;t have a domain set to the VM. You also can use
 any domain you like and set it you the IP of the VM on your /etc/hosts.</p>
 
-<div class="highlight"><pre><code class="language-shell" data-lang="shell">	<span class="c"># Create some directories to keep everything organized.</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="c"># Create some directories to keep everything organized.</span>
 	mkdir -p certs/<span class="o">{</span>client,server<span class="o">}</span> <span class="o">&amp;&amp;</span> <span class="nb">cd </span>certs
 	<span class="c"># Generate the CA</span>
 	openssl genrsa -des3 -out ca-key.pem
-	openssl req -new -x509 -days <span class="m">3650</span> -key ca-key.pem -out ca.pem
+	openssl req -new -x509 -days 3650 -key ca-key.pem -out ca.pem
 	<span class="c"># Generate the Server certificate and key.</span>
 	openssl genrsa -des3 -out server/key.pem
 	openssl req -new -key server/key.pem -out server/server.csr
-	openssl x509 -req -days <span class="m">365</span> -in server/server.csr -CA ca.pem <span class="se">\</span>
+	openssl x509 -req -days 365 -in server/server.csr -CA ca.pem <span class="se">\</span>
 		-CAKey ca-key.pem -CAcreateserial -out server/cert.pem
 
 	<span class="c"># Generate the Client certificate and key.</span>
 	openssl genrsa -des3 -out client/key.pem
 	openssl req -new -key client/key.pem -out client/client.csr
 	cho <span class="nv">extendedKeyUsage</span> <span class="o">=</span> clientAuth &gt; extfile.cnf
-	openssl x509 -req -days <span class="m">365</span> -in client/client.csr -CA ca.key -CAkey <span class="se">\</span>
+	openssl x509 -req -days 365 -in client/client.csr -CA ca.key -CAkey <span class="se">\</span>
 		ca-key.pem -CAcreateserial -out client/cert.pem -extfile extfile.cnf
 
 	<span class="c"># Remove the passwords of the keys, so we don&#39;t need to enter it every</span>
@@ -126,7 +126,7 @@ it, because it&rsquo;s awesome - you have to:</p>
 <li>Stop and disable the Docker service:</li>
 </ul>
 
-<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	systemctl stop docker
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	systemctl stop docker
 	systemctl disable docker
 </code></pre></div>
 </p>
@@ -136,7 +136,7 @@ it, because it&rsquo;s awesome - you have to:</p>
 content:</li>
 </ul>
 
-<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	<span class="o">[</span>Unit<span class="o">]</span>
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="o">[</span>Unit<span class="o">]</span>
 	<span class="nv">Description</span><span class="o">=</span>Docker Application Container Engine
 	<span class="nv">Documentation</span><span class="o">=</span>http://docs.docker.io
 
@@ -158,7 +158,7 @@ content:</li>
 <li>Start and enable the docker service:</li>
 </ul>
 
-<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	systemctl start docker
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	systemctl start docker
 	systemctl <span class="nb">enable </span>docker
 </code></pre></div>
 </p>
@@ -169,14 +169,14 @@ CoreOS stable version is 633.1.0 and ships with Docker 1.5, but the most
 recent version of Docker is 1.5. To install this the version 1.5 of
 Docker on OS X you can use homebrew[link]:</p>
 
-<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	brew tap homebrew/versions
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	brew tap homebrew/versions
 	brew install docker150
 </code></pre></div>
 </p>
 
 <p>Copy the client certificate and key and CA cert to ~/.docker/</p>
 
-<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	cp ca.pem ~/.docker/ca.pem
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	cp ca.pem ~/.docker/ca.pem
 	cp client/cert.pem ~/.docker/cert.pem
 	cp client-key.pem ~/.docker.pem
 </code></pre></div>
@@ -185,7 +185,7 @@ Docker on OS X you can use homebrew[link]:</p>
 <p>Set DOCKER_HOST enviroment variable to your VM and add it to your shell
 configuration file:</p>
 
-<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	<span class="c"># For bourne shell compatible shells use:</span>
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="c"># For bourne shell compatible shells use:</span>
 	<span class="nb">export </span><span class="nv">DOCKER_HOST</span><span class="o">=</span>tcp://your.coreos.host:4243
 
 	<span class="c"># For the Fish shell use:</span>
@@ -195,14 +195,14 @@ configuration file:</p>
 
 <p>Now you car run the following command to see if everything works:</p>
 
-<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	docker --tlsverify info
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	docker --tlsverify info
 </code></pre></div>
 </p>
 
 <p>It can be annoying to run every command with the flag
 <code>--tlsverify</code>, you can add an alias to your shell config file:</p>
 
-<p><div class="highlight"><pre><code class="language-shell" data-lang="shell">	<span class="c"># For bourne shell compatible shells use:</span>
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="c"># For bourne shell compatible shells use:</span>
 	<span class="nb">alias </span><span class="nv">docker</span><span class="o">=</span>docker --tlsverify
 
 	<span class="c"># For the fish shell:</span>

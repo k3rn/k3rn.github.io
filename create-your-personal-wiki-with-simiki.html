@@ -8,7 +8,7 @@
 		<title>Create your personal wiki with Simiki</title>
 
 		<link rel="stylesheet" href="https://mateuskern.com/css/style.css" />
-		
+		<link rel="stylesheet" href="https://mateuskern.com/css/pygments.css" />
 		
 			<script type="text/javascript">
     window.heap=window.heap||[],heap.load=function(t,e){window.heap.appid=t,window.heap.config=e;var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+t+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(t){return function(){heap.push([t].concat(Array.prototype.slice.call(arguments,0)))}},p=["clearEventProperties","identify","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
@@ -47,84 +47,99 @@
 
 <div id="post">
 	<h1 class="title">Create your personal wiki with Simiki </h1>
-	<p>I wanted to create a wiki to document my research/studyings/experiments
+	<p>I wanted to create a wiki to document my studies, researches and experiments
 for future refereces and share it with the internet.</p>
 
 <p>My requeriments for the software that would &lsquo;run&rsquo; the wiki was that it
-has to be simple - no access control, no database, no version history on
-the page and one file configuration -, generate static html and with
+has to generate a static website, have simple configuration and be under
 active develoment. Simiki fill all this requirments and with a bonus:
 It&rsquo;s written in python!</p>
 
 <p>So lets create the wiki:</p>
 
-<p>Install simiki it&rsquo;s as simple as:</p>
+<p>You can install simiki with pip. I highly recommend that you isolate your python
+application you can archive this with
+<a href="https://virtualenv.pypa.io/en/latest/">virtualenv</a>.</p>
 
-<pre><code class="language-sourceCode bash">pip install simiki # add sudo to the begining if you do not use virtualenv
-</code></pre>
+<p>Install pip:
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>pip install simiki <span class="c"># add sudo to the begining if you are not using virtualenv</span>
+</code></pre></div>
+</p>
 
-<p>To create the wiki, you simple run the command above on the path that
-the files will live:</p>
+<p>Create the wiki:</p>
 
-<pre><code class="language-sourceCode bash">simiki init
-</code></pre>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">cd</span> /desired/path/of/your/wiki
+<span class="nv">$ </span>simiki init
+</code></pre></div>
 
-<p>It will copy a few sample files to your current path, the configuration
-file: <em>_config.yml</em>, a sample page: <em>content/intro/gettingstarted.md</em>,
-a fabric file: <em>fabfile.py</em> to easy generate/preview/deploy the site and
-the <em>theme</em> folder where the templates lives.</p>
 
-<p>Beside the options already in the configuration file, one worth mentiong
-is the root one, that allows you to change the root folder, eg: you
-would like to host your wiki on the url: example.com/wiki, you simple
-change the <em>root</em> option to:</p>
+<p>The command will copy the configuration file: <code>_config.yml</code>, a sample page:
+<code>content/intro/gettingstarted.md</code>, a fabric file: <code>fabfile.py</code> to easy
+generate/preview/deploy the site and the <code>theme</code> folder where the templates
+lives.</p>
 
-<pre><code class="language-sourceCode yaml">root: /wiki
-</code></pre>
+<p>The options on the configuration file are pretty straightforward, but note
+that if you want your wiki on a subfolder i.e: <code>example.com/wiki</code>, you want
+to change the <code>root:</code> option, not the <code>url:</code></p>
 
-<p>To create pages is simple as running the following command:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">root: /wiki
+</code></pre></div>
 
-<pre><code class="language-sourceCode bash">simiki new -t &quot;Title&quot; -c category
-</code></pre>
 
-<p>Or just create a file folowing this path:
-<em>content/\$category/filname.md:</em>, and add the title and date to file,
-following this:</p>
+<p>Other interesting option is the <code>destination:</code>, you may set it to a path that
+is accessible to a webserver like apache or nginx, that you may already have
+running. I for example have mine set to <code>~/Sites</code> (OS X equivalent to the
+<code>~/public_html</code>).</p>
 
-<pre><code class="language-sourceCode">-------
-titile: &quot;Title&quot;
+<p>To create your wiki entries is simple as running the following command:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>simiki new -t <span class="s2">&quot;Title&quot;</span> -c category
+</code></pre></div>
+
+
+<p>Or just create a file folowing this path: <code>content/$category/filname.md:</code>,
+and add the title and date to the file&rsquo;s header.</p>
+
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">+++
+title: <span class="s2">&quot;Title&quot;</span>
 date: 2014-12-31 00:00
--------
-</code></pre>
++++
+</code></pre></div>
+</p>
 
 <p>I also modified the fabric file to add a function that auto-regenerate
-the html if any modification happens on the <em>content/</em> folder, so I will
+the html if any modification happens on the <code>content/</code> folder, so I will
 always have a local version, that will be served by apache and just a
 cronjob is need to push the changes to the public wiki.</p>
 
-<pre><code class="language-sourceCode python">import time
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
+<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">watchdog.observers</span> <span class="kn">import</span> <span class="n">Observer</span>
+<span class="kn">from</span> <span class="nn">watchdog.events</span> <span class="kn">import</span> <span class="n">FileSystemEventHandler</span>
 
 
-class Handler(FileSystemEventHandler):
-    def on_modified(self, event):
-        g()
+<span class="k">class</span> <span class="nc">Handler</span><span class="p">(</span><span class="n">FileSystemEventHandler</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">on_modified</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">g</span><span class="p">()</span>
 
 
-def l():
-    event_handler = Handler()
-    observer = Observer()
-    observer.schedule(event_handler, path='content/', recursive=True)
-    observer.start()
+<span class="k">def</span> <span class="nf">l</span><span class="p">():</span>
+    <span class="n">event_handler</span> <span class="o">=</span> <span class="n">Handler</span><span class="p">()</span>
+    <span class="n">observer</span> <span class="o">=</span> <span class="n">Observer</span><span class="p">()</span>
+    <span class="n">observer</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">event_handler</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;content/&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">observer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-    try:
-        while True:
-            time.sleep(1)
-    except (KeyboardInterrupt, SystemExit):
-        observer.stop()
-    observer.join()
-</code></pre>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyboardInterrupt</span><span class="p">,</span> <span class="ne">SystemExit</span><span class="p">):</span>
+        <span class="n">observer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="n">observer</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+</code></pre></div>
+</p>
+
+<p>Simiki may not have some useful features on the web pages such as revision
+history and search (I use git and ack respectively on the terminal to solve
+this). But I can edit my entries on vim which is pretty cool.</p>
 
 </div>
 			<div id="footer">

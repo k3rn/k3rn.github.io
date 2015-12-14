@@ -43,7 +43,7 @@ Or you can open the VM with the GUI interface and change there.&lt;/p&gt;
 &lt;p&gt;After that boot the VM and add your ssh key and remove the insecure one,
 to get the IP of the machine just press the enter key on the VM window.&lt;/p&gt;
 
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;	cat ~/.ssh/id_rsa.pub &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; ssh core@10.0.1.81 -i /path/to/insecure_ssh_key &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	cat ~/.ssh/id_rsa.pub | ssh core@10.0.1.81 -i /path/to/insecure_ssh_key &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
 	update-ssh-keys -a user
 	ssh core@10.0.1.81 update-ssh-keys -D oem
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -55,22 +55,22 @@ certificate accepts only passwords up to 20 characters. Use * to the
 FQDN field if you don&amp;rsquo;t have a domain set to the VM. You also can use
 any domain you like and set it you the IP of the VM on your /etc/hosts.&lt;/p&gt;
 
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;	&lt;span class=&#34;c&#34;&gt;# Create some directories to keep everything organized.&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;c&#34;&gt;# Create some directories to keep everything organized.&lt;/span&gt;
 	mkdir -p certs/&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;client,server&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;certs
 	&lt;span class=&#34;c&#34;&gt;# Generate the CA&lt;/span&gt;
 	openssl genrsa -des3 -out ca-key.pem
-	openssl req -new -x509 -days &lt;span class=&#34;m&#34;&gt;3650&lt;/span&gt; -key ca-key.pem -out ca.pem
+	openssl req -new -x509 -days 3650 -key ca-key.pem -out ca.pem
 	&lt;span class=&#34;c&#34;&gt;# Generate the Server certificate and key.&lt;/span&gt;
 	openssl genrsa -des3 -out server/key.pem
 	openssl req -new -key server/key.pem -out server/server.csr
-	openssl x509 -req -days &lt;span class=&#34;m&#34;&gt;365&lt;/span&gt; -in server/server.csr -CA ca.pem &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+	openssl x509 -req -days 365 -in server/server.csr -CA ca.pem &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
 		-CAKey ca-key.pem -CAcreateserial -out server/cert.pem
 
 	&lt;span class=&#34;c&#34;&gt;# Generate the Client certificate and key.&lt;/span&gt;
 	openssl genrsa -des3 -out client/key.pem
 	openssl req -new -key client/key.pem -out client/client.csr
 	cho &lt;span class=&#34;nv&#34;&gt;extendedKeyUsage&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; clientAuth &amp;gt; extfile.cnf
-	openssl x509 -req -days &lt;span class=&#34;m&#34;&gt;365&lt;/span&gt; -in client/client.csr -CA ca.key -CAkey &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+	openssl x509 -req -days 365 -in client/client.csr -CA ca.key -CAkey &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
 		ca-key.pem -CAcreateserial -out client/cert.pem -extfile extfile.cnf
 
 	&lt;span class=&#34;c&#34;&gt;# Remove the passwords of the keys, so we don&amp;#39;t need to enter it every&lt;/span&gt;
@@ -94,7 +94,7 @@ it, because it&amp;rsquo;s awesome - you have to:&lt;/p&gt;
 &lt;li&gt;Stop and disable the Docker service:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;	systemctl stop docker
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	systemctl stop docker
 	systemctl disable docker
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
@@ -104,7 +104,7 @@ it, because it&amp;rsquo;s awesome - you have to:&lt;/p&gt;
 content:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;	&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Unit&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Unit&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
 	&lt;span class=&#34;nv&#34;&gt;Description&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Docker Application Container Engine
 	&lt;span class=&#34;nv&#34;&gt;Documentation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;http://docs.docker.io
 
@@ -126,7 +126,7 @@ content:&lt;/li&gt;
 &lt;li&gt;Start and enable the docker service:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;	systemctl start docker
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	systemctl start docker
 	systemctl &lt;span class=&#34;nb&#34;&gt;enable &lt;/span&gt;docker
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
@@ -137,14 +137,14 @@ CoreOS stable version is 633.1.0 and ships with Docker 1.5, but the most
 recent version of Docker is 1.5. To install this the version 1.5 of
 Docker on OS X you can use homebrew[link]:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;	brew tap homebrew/versions
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	brew tap homebrew/versions
 	brew install docker150
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
 &lt;p&gt;Copy the client certificate and key and CA cert to ~/.docker/&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;	cp ca.pem ~/.docker/ca.pem
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	cp ca.pem ~/.docker/ca.pem
 	cp client/cert.pem ~/.docker/cert.pem
 	cp client-key.pem ~/.docker.pem
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -153,7 +153,7 @@ Docker on OS X you can use homebrew[link]:&lt;/p&gt;
 &lt;p&gt;Set DOCKER_HOST enviroment variable to your VM and add it to your shell
 configuration file:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;	&lt;span class=&#34;c&#34;&gt;# For bourne shell compatible shells use:&lt;/span&gt;
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;c&#34;&gt;# For bourne shell compatible shells use:&lt;/span&gt;
 	&lt;span class=&#34;nb&#34;&gt;export &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;DOCKER_HOST&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;tcp://your.coreos.host:4243
 
 	&lt;span class=&#34;c&#34;&gt;# For the Fish shell use:&lt;/span&gt;
@@ -163,14 +163,14 @@ configuration file:&lt;/p&gt;
 
 &lt;p&gt;Now you car run the following command to see if everything works:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;	docker --tlsverify info
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	docker --tlsverify info
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
 &lt;p&gt;It can be annoying to run every command with the flag
 &lt;code&gt;--tlsverify&lt;/code&gt;, you can add an alias to your shell config file:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;	&lt;span class=&#34;c&#34;&gt;# For bourne shell compatible shells use:&lt;/span&gt;
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;c&#34;&gt;# For bourne shell compatible shells use:&lt;/span&gt;
 	&lt;span class=&#34;nb&#34;&gt;alias &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;docker&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;docker --tlsverify
 
 	&lt;span class=&#34;c&#34;&gt;# For the fish shell:&lt;/span&gt;
@@ -191,84 +191,99 @@ CoreOS&lt;/a&gt;.&lt;/p&gt;
       <pubDate>Tue, 08 Dec 2015 00:00:00 +0000</pubDate>
       
       <guid>https://mateuskern.com/create-your-personal-wiki-with-simiki.html</guid>
-      <description>&lt;p&gt;I wanted to create a wiki to document my research/studyings/experiments
+      <description>&lt;p&gt;I wanted to create a wiki to document my studies, researches and experiments
 for future refereces and share it with the internet.&lt;/p&gt;
 
 &lt;p&gt;My requeriments for the software that would &amp;lsquo;run&amp;rsquo; the wiki was that it
-has to be simple - no access control, no database, no version history on
-the page and one file configuration -, generate static html and with
+has to generate a static website, have simple configuration and be under
 active develoment. Simiki fill all this requirments and with a bonus:
 It&amp;rsquo;s written in python!&lt;/p&gt;
 
 &lt;p&gt;So lets create the wiki:&lt;/p&gt;
 
-&lt;p&gt;Install simiki it&amp;rsquo;s as simple as:&lt;/p&gt;
+&lt;p&gt;You can install simiki with pip. I highly recommend that you isolate your python
+application you can archive this with
+&lt;a href=&#34;https://virtualenv.pypa.io/en/latest/&#34;&gt;virtualenv&lt;/a&gt;.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-sourceCode bash&#34;&gt;pip install simiki # add sudo to the begining if you do not use virtualenv
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Install pip:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;pip install simiki &lt;span class=&#34;c&#34;&gt;# add sudo to the begining if you are not using virtualenv&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
 
-&lt;p&gt;To create the wiki, you simple run the command above on the path that
-the files will live:&lt;/p&gt;
+&lt;p&gt;Create the wiki:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-sourceCode bash&#34;&gt;simiki init
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; /desired/path/of/your/wiki
+&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;simiki init
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;It will copy a few sample files to your current path, the configuration
-file: &lt;em&gt;_config.yml&lt;/em&gt;, a sample page: &lt;em&gt;content/intro/gettingstarted.md&lt;/em&gt;,
-a fabric file: &lt;em&gt;fabfile.py&lt;/em&gt; to easy generate/preview/deploy the site and
-the &lt;em&gt;theme&lt;/em&gt; folder where the templates lives.&lt;/p&gt;
 
-&lt;p&gt;Beside the options already in the configuration file, one worth mentiong
-is the root one, that allows you to change the root folder, eg: you
-would like to host your wiki on the url: example.com/wiki, you simple
-change the &lt;em&gt;root&lt;/em&gt; option to:&lt;/p&gt;
+&lt;p&gt;The command will copy the configuration file: &lt;code&gt;_config.yml&lt;/code&gt;, a sample page:
+&lt;code&gt;content/intro/gettingstarted.md&lt;/code&gt;, a fabric file: &lt;code&gt;fabfile.py&lt;/code&gt; to easy
+generate/preview/deploy the site and the &lt;code&gt;theme&lt;/code&gt; folder where the templates
+lives.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-sourceCode yaml&#34;&gt;root: /wiki
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The options on the configuration file are pretty straightforward, but note
+that if you want your wiki on a subfolder i.e: &lt;code&gt;example.com/wiki&lt;/code&gt;, you want
+to change the &lt;code&gt;root:&lt;/code&gt; option, not the &lt;code&gt;url:&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;To create pages is simple as running the following command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;root: /wiki
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-sourceCode bash&#34;&gt;simiki new -t &amp;quot;Title&amp;quot; -c category
-&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Or just create a file folowing this path:
-&lt;em&gt;content/\$category/filname.md:&lt;/em&gt;, and add the title and date to file,
-following this:&lt;/p&gt;
+&lt;p&gt;Other interesting option is the &lt;code&gt;destination:&lt;/code&gt;, you may set it to a path that
+is accessible to a webserver like apache or nginx, that you may already have
+running. I for example have mine set to &lt;code&gt;~/Sites&lt;/code&gt; (OS X equivalent to the
+&lt;code&gt;~/public_html&lt;/code&gt;).&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-sourceCode&#34;&gt;-------
-titile: &amp;quot;Title&amp;quot;
+&lt;p&gt;To create your wiki entries is simple as running the following command:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;simiki new -t &lt;span class=&#34;s2&#34;&gt;&amp;quot;Title&amp;quot;&lt;/span&gt; -c category
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Or just create a file folowing this path: &lt;code&gt;content/$category/filname.md:&lt;/code&gt;,
+and add the title and date to the file&amp;rsquo;s header.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;+++
+title: &lt;span class=&#34;s2&#34;&gt;&amp;quot;Title&amp;quot;&lt;/span&gt;
 date: 2014-12-31 00:00
--------
-&lt;/code&gt;&lt;/pre&gt;
++++
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
 
 &lt;p&gt;I also modified the fabric file to add a function that auto-regenerate
-the html if any modification happens on the &lt;em&gt;content/&lt;/em&gt; folder, so I will
+the html if any modification happens on the &lt;code&gt;content/&lt;/code&gt; folder, so I will
 always have a local version, that will be served by apache and just a
 cronjob is need to push the changes to the public wiki.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-sourceCode python&#34;&gt;import time
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;time&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;watchdog.observers&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Observer&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;watchdog.events&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FileSystemEventHandler&lt;/span&gt;
 
 
-class Handler(FileSystemEventHandler):
-    def on_modified(self, event):
-        g()
+&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Handler&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;FileSystemEventHandler&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;on_modified&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;event&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
 
 
-def l():
-    event_handler = Handler()
-    observer = Observer()
-    observer.schedule(event_handler, path=&#39;content/&#39;, recursive=True)
-    observer.start()
+&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;event_handler&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Handler&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;observer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Observer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;observer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;schedule&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;event_handler&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;content/&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;recursive&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;observer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;start&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
 
-    try:
-        while True:
-            time.sleep(1)
-    except (KeyboardInterrupt, SystemExit):
-        observer.stop()
-    observer.join()
-&lt;/code&gt;&lt;/pre&gt;
+    &lt;span class=&#34;k&#34;&gt;try&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;time&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sleep&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;except&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;ne&#34;&gt;KeyboardInterrupt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ne&#34;&gt;SystemExit&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;observer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;stop&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;observer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Simiki may not have some useful features on the web pages such as revision
+history and search (I use git and ack respectively on the terminal to solve
+this). But I can edit my entries on vim which is pretty cool.&lt;/p&gt;
 </description>
     </item>
     
