@@ -43,7 +43,7 @@ Or you can open the VM with the GUI interface and change there.&lt;/p&gt;
 &lt;p&gt;After that boot the VM and add your ssh key and remove the insecure one,
 to get the IP of the machine just press the enter key on the VM window.&lt;/p&gt;
 
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	cat ~/.ssh/id_rsa.pub | ssh core@10.0.1.81 -i /path/to/insecure_ssh_key &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	cat ~/.ssh/id_rsa.pub &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; ssh core@10.0.1.81 -i /path/to/insecure_ssh_key &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
 	update-ssh-keys -a user
 	ssh core@10.0.1.81 update-ssh-keys -D oem
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -59,18 +59,18 @@ any domain you like and set it you the IP of the VM on your /etc/hosts.&lt;/p&gt
 	mkdir -p certs/&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;client,server&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;certs
 	&lt;span class=&#34;c&#34;&gt;# Generate the CA&lt;/span&gt;
 	openssl genrsa -des3 -out ca-key.pem
-	openssl req -new -x509 -days 3650 -key ca-key.pem -out ca.pem
+	openssl req -new -x509 -days &lt;span class=&#34;m&#34;&gt;3650&lt;/span&gt; -key ca-key.pem -out ca.pem
 	&lt;span class=&#34;c&#34;&gt;# Generate the Server certificate and key.&lt;/span&gt;
 	openssl genrsa -des3 -out server/key.pem
 	openssl req -new -key server/key.pem -out server/server.csr
-	openssl x509 -req -days 365 -in server/server.csr -CA ca.pem &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+	openssl x509 -req -days &lt;span class=&#34;m&#34;&gt;365&lt;/span&gt; -in server/server.csr -CA ca.pem &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
 		-CAKey ca-key.pem -CAcreateserial -out server/cert.pem
 
 	&lt;span class=&#34;c&#34;&gt;# Generate the Client certificate and key.&lt;/span&gt;
 	openssl genrsa -des3 -out client/key.pem
 	openssl req -new -key client/key.pem -out client/client.csr
 	cho &lt;span class=&#34;nv&#34;&gt;extendedKeyUsage&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; clientAuth &amp;gt; extfile.cnf
-	openssl x509 -req -days 365 -in client/client.csr -CA ca.key -CAkey &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+	openssl x509 -req -days &lt;span class=&#34;m&#34;&gt;365&lt;/span&gt; -in client/client.csr -CA ca.key -CAkey &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
 		ca-key.pem -CAcreateserial -out client/cert.pem -extfile extfile.cnf
 
 	&lt;span class=&#34;c&#34;&gt;# Remove the passwords of the keys, so we don&amp;#39;t need to enter it every&lt;/span&gt;

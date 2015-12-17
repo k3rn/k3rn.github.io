@@ -17,19 +17,20 @@
       <guid>https://mateuskern.com/pages/about.html</guid>
       <description>
 
-&lt;p&gt;Hello, I&amp;rsquo;m Kern. I currently live in southern Brazil. I have interest in
-science fiction, right to privacy, security, freedom of information,
+&lt;p&gt;Hello, my name is Mateus Kern, you can call me Kern.
+I currently live in southern Brazil. I have interest in science fiction,
+right to privacy, security, freedom of information,
 international affairs, history, &lt;a href=&#34;https://last.fm/user/kernnerd&#34;&gt;music&lt;/a&gt;,
 &lt;a href=&#34;http://www.tvshowtime.com/kern&#34;&gt;television shows&lt;/a&gt;, astronomy, space
 exploration, military aviation and woodworking.&lt;/p&gt;
 
 &lt;h2 id=&#34;professional:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;Professional&lt;/h2&gt;
 
-&lt;p&gt;I like planning, implementing and maintaining systems architecture with
-the help of tools that provide automation, monitoring and metrics. And
-building backend software, preferably with python.&lt;/p&gt;
+&lt;p&gt;I spent my time gaining knowledge and experience in my three main areas
+of interest: security, software development and system administration.&lt;/p&gt;
 
-&lt;p&gt;If you have interest in hiring me, please see this &lt;a href=&#34;https://mateuskern.com/pages/hire-me.html&#34;&gt;page&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Please see more about my professional life at the &lt;a href=&#34;https://mateuskern.com/pages/hire-me.html&#34;&gt;hire me
+page&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
@@ -47,34 +48,6 @@ building backend software, preferably with python.&lt;/p&gt;
 &lt;a href=&#34;http://pgp.mit.edu:11371/pks/lookup?op=get&amp;amp;search=0xD13DF6B1E0A6AB42&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;If you prefer to call, you can contact me at +55 (51) 9793-8559.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Hire me</title>
-      <link>https://mateuskern.com/pages/hire-me.html</link>
-      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
-      
-      <guid>https://mateuskern.com/pages/hire-me.html</guid>
-      <description>&lt;p&gt;Hello, my name is Mateus Kern and I am passionate about Unix-like system
-and I am looking for an entry level position (preferably remote), as
-System Administrator.&lt;/p&gt;
-
-&lt;p&gt;I have a good knowledge of Linux based operating system - specially the
-Debian family -, scripting with bourne shell (sh) and python, nginx
-webserver, and configuration management with Ansible. Also, I have
-knowledge in the netfilter framework.&lt;/p&gt;
-
-&lt;p&gt;Curently I&amp;rsquo;m studying Django and docker.&lt;/p&gt;
-
-&lt;p&gt;I have example of my coding at &lt;a href=&#34;https://github.com/k3rn&#34;&gt;github&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;If you are interested in hiring me, please &lt;a href=&#34;mailto:kern@mateuskern.com&#34;&gt;send me a
-email&lt;/a&gt; or contact me through the number +55
-(51) 9793-8559.&lt;/p&gt;
-
-&lt;p&gt;You can download my resume
-&lt;a href=&#34;https://mateuskern.com/mateuskern-resume.pdf&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
@@ -112,7 +85,7 @@ Or you can open the VM with the GUI interface and change there.&lt;/p&gt;
 &lt;p&gt;After that boot the VM and add your ssh key and remove the insecure one,
 to get the IP of the machine just press the enter key on the VM window.&lt;/p&gt;
 
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	cat ~/.ssh/id_rsa.pub | ssh core@10.0.1.81 -i /path/to/insecure_ssh_key &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	cat ~/.ssh/id_rsa.pub &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; ssh core@10.0.1.81 -i /path/to/insecure_ssh_key &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
 	update-ssh-keys -a user
 	ssh core@10.0.1.81 update-ssh-keys -D oem
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -128,18 +101,18 @@ any domain you like and set it you the IP of the VM on your /etc/hosts.&lt;/p&gt
 	mkdir -p certs/&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;client,server&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;certs
 	&lt;span class=&#34;c&#34;&gt;# Generate the CA&lt;/span&gt;
 	openssl genrsa -des3 -out ca-key.pem
-	openssl req -new -x509 -days 3650 -key ca-key.pem -out ca.pem
+	openssl req -new -x509 -days &lt;span class=&#34;m&#34;&gt;3650&lt;/span&gt; -key ca-key.pem -out ca.pem
 	&lt;span class=&#34;c&#34;&gt;# Generate the Server certificate and key.&lt;/span&gt;
 	openssl genrsa -des3 -out server/key.pem
 	openssl req -new -key server/key.pem -out server/server.csr
-	openssl x509 -req -days 365 -in server/server.csr -CA ca.pem &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+	openssl x509 -req -days &lt;span class=&#34;m&#34;&gt;365&lt;/span&gt; -in server/server.csr -CA ca.pem &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
 		-CAKey ca-key.pem -CAcreateserial -out server/cert.pem
 
 	&lt;span class=&#34;c&#34;&gt;# Generate the Client certificate and key.&lt;/span&gt;
 	openssl genrsa -des3 -out client/key.pem
 	openssl req -new -key client/key.pem -out client/client.csr
 	cho &lt;span class=&#34;nv&#34;&gt;extendedKeyUsage&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; clientAuth &amp;gt; extfile.cnf
-	openssl x509 -req -days 365 -in client/client.csr -CA ca.key -CAkey &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
+	openssl x509 -req -days &lt;span class=&#34;m&#34;&gt;365&lt;/span&gt; -in client/client.csr -CA ca.key -CAkey &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
 		ca-key.pem -CAcreateserial -out client/cert.pem -extfile extfile.cnf
 
 	&lt;span class=&#34;c&#34;&gt;# Remove the passwords of the keys, so we don&amp;#39;t need to enter it every&lt;/span&gt;
@@ -251,6 +224,35 @@ configuration file:&lt;/p&gt;
 
 &lt;p&gt;[1] &lt;a href=&#34;http://blog.jameskyle.org/2014/04/coreos-docker-remote-api-tls/&#34;&gt;Configuring Docker Remote API with TLS on
 CoreOS&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Professional</title>
+      <link>https://mateuskern.com/pages/hire-me.html</link>
+      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://mateuskern.com/pages/hire-me.html</guid>
+      <description>&lt;p&gt;My main three areas of interest are security, software development and system
+administration.&lt;/p&gt;
+
+&lt;p&gt;Although I tend to keep my knowledge and experience agnostic in terms of
+tools, preferences and specializations are needed and mine are:
+Ansible, docker, GNU/Linux Debian, python and nginx webserver.&lt;/p&gt;
+
+&lt;p&gt;I have some of my personal projects on &lt;a href=&#34;https://github.com/k3rn&#34;&gt;github&lt;/a&gt; and
+I write about them, other experiences and opinions on this website.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m currently looking for a junior position (preferably remote) linked to my
+ares of interest (e.g. System Administrator, Software Developer, Security
+Researcher, etc.) that will give me the opportunity to help the company grow
+as I enhance my experiences and knowledgde.&lt;/p&gt;
+
+&lt;p&gt;If you are interested in hiring me, please &lt;a href=&#34;mailto:kern@mateuskern.com&#34;&gt;send me a
+email&lt;/a&gt; or contact me through the number +55
+(51) 9793-8559.&lt;/p&gt;
+
+&lt;p&gt;You can view my &lt;a href=&#34;https://mateuskern.com/mateuskern-resume.pdf&#34;&gt;resume&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     

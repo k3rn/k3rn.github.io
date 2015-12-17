@@ -17,19 +17,20 @@
       <guid>https://mateuskern.com/pages/about.html</guid>
       <description>
 
-&lt;p&gt;Hello, I&amp;rsquo;m Kern. I currently live in southern Brazil. I have interest in
-science fiction, right to privacy, security, freedom of information,
+&lt;p&gt;Hello, my name is Mateus Kern, you can call me Kern.
+I currently live in southern Brazil. I have interest in science fiction,
+right to privacy, security, freedom of information,
 international affairs, history, &lt;a href=&#34;https://last.fm/user/kernnerd&#34;&gt;music&lt;/a&gt;,
 &lt;a href=&#34;http://www.tvshowtime.com/kern&#34;&gt;television shows&lt;/a&gt;, astronomy, space
 exploration, military aviation and woodworking.&lt;/p&gt;
 
 &lt;h2 id=&#34;professional:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;Professional&lt;/h2&gt;
 
-&lt;p&gt;I like planning, implementing and maintaining systems architecture with
-the help of tools that provide automation, monitoring and metrics. And
-building backend software, preferably with python.&lt;/p&gt;
+&lt;p&gt;I spent my time gaining knowledge and experience in my three main areas
+of interest: security, software development and system administration.&lt;/p&gt;
 
-&lt;p&gt;If you have interest in hiring me, please see this &lt;a href=&#34;https://mateuskern.com/pages/hire-me.html&#34;&gt;page&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Please see more about my professional life at the &lt;a href=&#34;https://mateuskern.com/pages/hire-me.html&#34;&gt;hire me
+page&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
@@ -51,30 +52,31 @@ building backend software, preferably with python.&lt;/p&gt;
     </item>
     
     <item>
-      <title>Hire me</title>
+      <title>Professional</title>
       <link>https://mateuskern.com/pages/hire-me.html</link>
       <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
       
       <guid>https://mateuskern.com/pages/hire-me.html</guid>
-      <description>&lt;p&gt;Hello, my name is Mateus Kern and I am passionate about Unix-like system
-and I am looking for an entry level position (preferably remote), as
-System Administrator.&lt;/p&gt;
+      <description>&lt;p&gt;My main three areas of interest are security, software development and system
+administration.&lt;/p&gt;
 
-&lt;p&gt;I have a good knowledge of Linux based operating system - specially the
-Debian family -, scripting with bourne shell (sh) and python, nginx
-webserver, and configuration management with Ansible. Also, I have
-knowledge in the netfilter framework.&lt;/p&gt;
+&lt;p&gt;Although I tend to keep my knowledge and experience agnostic in terms of
+tools, preferences and specializations are needed and mine are:
+Ansible, docker, GNU/Linux Debian, python and nginx webserver.&lt;/p&gt;
 
-&lt;p&gt;Curently I&amp;rsquo;m studying Django and docker.&lt;/p&gt;
+&lt;p&gt;I have some of my personal projects on &lt;a href=&#34;https://github.com/k3rn&#34;&gt;github&lt;/a&gt; and
+I write about them, other experiences and opinions on this website.&lt;/p&gt;
 
-&lt;p&gt;I have example of my coding at &lt;a href=&#34;https://github.com/k3rn&#34;&gt;github&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m currently looking for a junior position (preferably remote) linked to my
+ares of interest (e.g. System Administrator, Software Developer, Security
+Researcher, etc.) that will give me the opportunity to help the company grow
+as I enhance my experiences and knowledgde.&lt;/p&gt;
 
 &lt;p&gt;If you are interested in hiring me, please &lt;a href=&#34;mailto:kern@mateuskern.com&#34;&gt;send me a
 email&lt;/a&gt; or contact me through the number +55
 (51) 9793-8559.&lt;/p&gt;
 
-&lt;p&gt;You can download my resume
-&lt;a href=&#34;https://mateuskern.com/mateuskern-resume.pdf&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You can view my &lt;a href=&#34;https://mateuskern.com/mateuskern-resume.pdf&#34;&gt;resume&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
