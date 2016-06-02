@@ -58,7 +58,7 @@ page&lt;/a&gt;.&lt;/p&gt;
       
       <guid>https://mateuskern.com/my-solution-to-docker-on-os-x.html</guid>
       <description>&lt;blockquote&gt;
-&lt;p&gt;This post is outdated and I will update it in the near future.&lt;/p&gt;
+&lt;p&gt;This post is outdated and I will be updating it in the near future.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;Note: Through the post I use a VM on my local machine on VMware Fusion but
@@ -97,30 +97,30 @@ certificate accepts only passwords up to 20 characters. Use * to the
 FQDN field if you don&amp;rsquo;t have a domain set to the VM. You also can use
 any domain you like and set it you the IP of the VM on your /etc/hosts.&lt;/p&gt;
 
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;c&#34;&gt;# Create some directories to keep everything organized.&lt;/span&gt;
-	mkdir -p certs/&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;client,server&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;certs
-	&lt;span class=&#34;c&#34;&gt;# Generate the CA&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;# Create some directories to keep everything organized.&lt;/span&gt;
+	mkdir -p certs/&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;client,server&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; certs
+	&lt;span class=&#34;c1&#34;&gt;# Generate the CA&lt;/span&gt;
 	openssl genrsa -des3 -out ca-key.pem
 	openssl req -new -x509 -days &lt;span class=&#34;m&#34;&gt;3650&lt;/span&gt; -key ca-key.pem -out ca.pem
-	&lt;span class=&#34;c&#34;&gt;# Generate the Server certificate and key.&lt;/span&gt;
+	&lt;span class=&#34;c1&#34;&gt;# Generate the Server certificate and key.&lt;/span&gt;
 	openssl genrsa -des3 -out server/key.pem
 	openssl req -new -key server/key.pem -out server/server.csr
 	openssl x509 -req -days &lt;span class=&#34;m&#34;&gt;365&lt;/span&gt; -in server/server.csr -CA ca.pem &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
 		-CAKey ca-key.pem -CAcreateserial -out server/cert.pem
 
-	&lt;span class=&#34;c&#34;&gt;# Generate the Client certificate and key.&lt;/span&gt;
+	&lt;span class=&#34;c1&#34;&gt;# Generate the Client certificate and key.&lt;/span&gt;
 	openssl genrsa -des3 -out client/key.pem
 	openssl req -new -key client/key.pem -out client/client.csr
 	cho &lt;span class=&#34;nv&#34;&gt;extendedKeyUsage&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; clientAuth &amp;gt; extfile.cnf
 	openssl x509 -req -days &lt;span class=&#34;m&#34;&gt;365&lt;/span&gt; -in client/client.csr -CA ca.key -CAkey &lt;span class=&#34;se&#34;&gt;\&lt;/span&gt;
 		ca-key.pem -CAcreateserial -out client/cert.pem -extfile extfile.cnf
 
-	&lt;span class=&#34;c&#34;&gt;# Remove the passwords of the keys, so we don&amp;#39;t need to enter it every&lt;/span&gt;
-	&lt;span class=&#34;c&#34;&gt;# time the VM boots.&lt;/span&gt;
+	&lt;span class=&#34;c1&#34;&gt;# Remove the passwords of the keys, so we don&amp;#39;t need to enter it every&lt;/span&gt;
+	&lt;span class=&#34;c1&#34;&gt;# time the VM boots.&lt;/span&gt;
 	openssl rsa -in server/key.pem -out server-key.pem
 	openssl rsa -in client/key.pem -out client-key.pem
 
-	&lt;span class=&#34;c&#34;&gt;# Zip the files that the docker daemon needs.&lt;/span&gt;
+	&lt;span class=&#34;c1&#34;&gt;# Zip the files that the docker daemon needs.&lt;/span&gt;
 	zip docker.zip ca.pem server-key.pem server/server-cert.pem
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -152,8 +152,8 @@ content:&lt;/li&gt;
 
 	&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Service&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
 	&lt;span class=&#34;nv&#34;&gt;ExecStartPre&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/bin/mount --make-rprivate /
-	&lt;span class=&#34;c&#34;&gt;# Run docker but don&amp;#39;t have docker automatically restart&lt;/span&gt;
-	&lt;span class=&#34;c&#34;&gt;# containers. This is a job for systemd and unit files.&lt;/span&gt;
+	&lt;span class=&#34;c1&#34;&gt;# Run docker but don&amp;#39;t have docker automatically restart&lt;/span&gt;
+	&lt;span class=&#34;c1&#34;&gt;# containers. This is a job for systemd and unit files.&lt;/span&gt;
 	&lt;span class=&#34;nv&#34;&gt;ExecStart&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/usr/bin/docker -d --tlsverify --tlscacert&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/var/ssl/ca.pem
 	--tlscert&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/var/ssl/server-cert.pem --tlskey&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/var/ssl/server-key.pem -H fd://
 	-H 0.0.0.0:4243
@@ -169,7 +169,7 @@ content:&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	systemctl start docker
-	systemctl &lt;span class=&#34;nb&#34;&gt;enable &lt;/span&gt;docker
+	systemctl &lt;span class=&#34;nb&#34;&gt;enable&lt;/span&gt; docker
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
@@ -195,10 +195,10 @@ Docker on OS X you can use homebrew[link]:&lt;/p&gt;
 &lt;p&gt;Set DOCKER_HOST enviroment variable to your VM and add it to your shell
 configuration file:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;c&#34;&gt;# For bourne shell compatible shells use:&lt;/span&gt;
-	&lt;span class=&#34;nb&#34;&gt;export &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;DOCKER_HOST&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;tcp://your.coreos.host:4243
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;# For bourne shell compatible shells use:&lt;/span&gt;
+	&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;DOCKER_HOST&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;tcp://your.coreos.host:4243
 
-	&lt;span class=&#34;c&#34;&gt;# For the Fish shell use:&lt;/span&gt;
+	&lt;span class=&#34;c1&#34;&gt;# For the Fish shell use:&lt;/span&gt;
 	&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; -x DOCKER_HOST &lt;span class=&#34;s1&#34;&gt;&amp;#39;tcp://your.coreos.host:4243&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
@@ -212,11 +212,11 @@ configuration file:&lt;/p&gt;
 &lt;p&gt;It can be annoying to run every command with the flag
 &lt;code&gt;--tlsverify&lt;/code&gt;, you can add an alias to your shell config file:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;c&#34;&gt;# For bourne shell compatible shells use:&lt;/span&gt;
-	&lt;span class=&#34;nb&#34;&gt;alias &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;docker&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;docker --tlsverify
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;# For bourne shell compatible shells use:&lt;/span&gt;
+	&lt;span class=&#34;nb&#34;&gt;alias&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;docker&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;docker --tlsverify
 
-	&lt;span class=&#34;c&#34;&gt;# For the fish shell:&lt;/span&gt;
-	&lt;span class=&#34;nb&#34;&gt;alias &lt;/span&gt;docker &lt;span class=&#34;s2&#34;&gt;&amp;quot;docker --tlsverify&amp;quot;&lt;/span&gt;
+	&lt;span class=&#34;c1&#34;&gt;# For the fish shell:&lt;/span&gt;
+	&lt;span class=&#34;nb&#34;&gt;alias&lt;/span&gt; docker &lt;span class=&#34;s2&#34;&gt;&amp;quot;docker --tlsverify&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
@@ -277,14 +277,14 @@ application you can archive this with
 &lt;a href=&#34;https://virtualenv.pypa.io/en/latest/&#34;&gt;virtualenv&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Install pip:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;pip install simiki &lt;span class=&#34;c&#34;&gt;# add sudo to the begining if you are not using virtualenv&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ pip install simiki &lt;span class=&#34;c1&#34;&gt;# add sudo to the begining if you are not using virtualenv&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
 &lt;p&gt;Create the wiki:&lt;/p&gt;
 
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; /desired/path/of/your/wiki
-&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;simiki init
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; /desired/path/of/your/wiki
+$ simiki init
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -308,19 +308,19 @@ running. I for example have mine set to &lt;code&gt;~/Sites&lt;/code&gt; (OS X e
 
 &lt;p&gt;To create your wiki entries is simple as running the following command:&lt;/p&gt;
 
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;simiki new -t &lt;span class=&#34;s2&#34;&gt;&amp;quot;Title&amp;quot;&lt;/span&gt; -c category
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ simiki new -t &lt;span class=&#34;s2&#34;&gt;&amp;quot;Title&amp;quot;&lt;/span&gt; -c category
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Or just create a file folowing this path: &lt;code&gt;content/$category/filname.md:&lt;/code&gt;,
 and add the title and date to the file&amp;rsquo;s header.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;+++
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;+++
 title: &lt;span class=&#34;s2&#34;&gt;&amp;quot;Title&amp;quot;&lt;/span&gt;
 date: 2014-12-31 00:00
 +++
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;I also modified the fabric file to add a function that auto-regenerate
 the html if any modification happens on the &lt;code&gt;content/&lt;/code&gt; folder, so I will
@@ -340,7 +340,7 @@ cronjob is need to push the changes to the public wiki.&lt;/p&gt;
 &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;event_handler&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Handler&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;observer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Observer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;observer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;schedule&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;event_handler&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;content/&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;recursive&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;observer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;schedule&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;event_handler&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;content/&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;recursive&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;observer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;start&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
 
     &lt;span class=&#34;k&#34;&gt;try&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;

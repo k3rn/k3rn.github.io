@@ -48,7 +48,7 @@
 <div id="post">
 	<h1 class="title">My solution to Docker on OS X </h1>
 	<blockquote>
-<p>This post is outdated and I will update it in the near future.</p>
+<p>This post is outdated and I will be updating it in the near future.</p>
 </blockquote>
 
 <p>Note: Through the post I use a VM on my local machine on VMware Fusion but
@@ -87,30 +87,30 @@ certificate accepts only passwords up to 20 characters. Use * to the
 FQDN field if you don&rsquo;t have a domain set to the VM. You also can use
 any domain you like and set it you the IP of the VM on your /etc/hosts.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="c"># Create some directories to keep everything organized.</span>
-	mkdir -p certs/<span class="o">{</span>client,server<span class="o">}</span> <span class="o">&amp;&amp;</span> <span class="nb">cd </span>certs
-	<span class="c"># Generate the CA</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="c1"># Create some directories to keep everything organized.</span>
+	mkdir -p certs/<span class="o">{</span>client,server<span class="o">}</span> <span class="o">&amp;&amp;</span> <span class="nb">cd</span> certs
+	<span class="c1"># Generate the CA</span>
 	openssl genrsa -des3 -out ca-key.pem
 	openssl req -new -x509 -days <span class="m">3650</span> -key ca-key.pem -out ca.pem
-	<span class="c"># Generate the Server certificate and key.</span>
+	<span class="c1"># Generate the Server certificate and key.</span>
 	openssl genrsa -des3 -out server/key.pem
 	openssl req -new -key server/key.pem -out server/server.csr
 	openssl x509 -req -days <span class="m">365</span> -in server/server.csr -CA ca.pem <span class="se">\</span>
 		-CAKey ca-key.pem -CAcreateserial -out server/cert.pem
 
-	<span class="c"># Generate the Client certificate and key.</span>
+	<span class="c1"># Generate the Client certificate and key.</span>
 	openssl genrsa -des3 -out client/key.pem
 	openssl req -new -key client/key.pem -out client/client.csr
 	cho <span class="nv">extendedKeyUsage</span> <span class="o">=</span> clientAuth &gt; extfile.cnf
 	openssl x509 -req -days <span class="m">365</span> -in client/client.csr -CA ca.key -CAkey <span class="se">\</span>
 		ca-key.pem -CAcreateserial -out client/cert.pem -extfile extfile.cnf
 
-	<span class="c"># Remove the passwords of the keys, so we don&#39;t need to enter it every</span>
-	<span class="c"># time the VM boots.</span>
+	<span class="c1"># Remove the passwords of the keys, so we don&#39;t need to enter it every</span>
+	<span class="c1"># time the VM boots.</span>
 	openssl rsa -in server/key.pem -out server-key.pem
 	openssl rsa -in client/key.pem -out client-key.pem
 
-	<span class="c"># Zip the files that the docker daemon needs.</span>
+	<span class="c1"># Zip the files that the docker daemon needs.</span>
 	zip docker.zip ca.pem server-key.pem server/server-cert.pem
 </code></pre></div>
 
@@ -142,8 +142,8 @@ content:</li>
 
 	<span class="o">[</span>Service<span class="o">]</span>
 	<span class="nv">ExecStartPre</span><span class="o">=</span>/bin/mount --make-rprivate /
-	<span class="c"># Run docker but don&#39;t have docker automatically restart</span>
-	<span class="c"># containers. This is a job for systemd and unit files.</span>
+	<span class="c1"># Run docker but don&#39;t have docker automatically restart</span>
+	<span class="c1"># containers. This is a job for systemd and unit files.</span>
 	<span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/docker -d --tlsverify --tlscacert<span class="o">=</span>/var/ssl/ca.pem
 	--tlscert<span class="o">=</span>/var/ssl/server-cert.pem --tlskey<span class="o">=</span>/var/ssl/server-key.pem -H fd://
 	-H 0.0.0.0:4243
@@ -159,7 +159,7 @@ content:</li>
 </ul>
 
 <p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	systemctl start docker
-	systemctl <span class="nb">enable </span>docker
+	systemctl <span class="nb">enable</span> docker
 </code></pre></div>
 </p>
 
@@ -185,10 +185,10 @@ Docker on OS X you can use homebrew[link]:</p>
 <p>Set DOCKER_HOST enviroment variable to your VM and add it to your shell
 configuration file:</p>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="c"># For bourne shell compatible shells use:</span>
-	<span class="nb">export </span><span class="nv">DOCKER_HOST</span><span class="o">=</span>tcp://your.coreos.host:4243
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="c1"># For bourne shell compatible shells use:</span>
+	<span class="nb">export</span> <span class="nv">DOCKER_HOST</span><span class="o">=</span>tcp://your.coreos.host:4243
 
-	<span class="c"># For the Fish shell use:</span>
+	<span class="c1"># For the Fish shell use:</span>
 	<span class="nb">set</span> -x DOCKER_HOST <span class="s1">&#39;tcp://your.coreos.host:4243&#39;</span>
 </code></pre></div>
 </p>
@@ -202,11 +202,11 @@ configuration file:</p>
 <p>It can be annoying to run every command with the flag
 <code>--tlsverify</code>, you can add an alias to your shell config file:</p>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="c"># For bourne shell compatible shells use:</span>
-	<span class="nb">alias </span><span class="nv">docker</span><span class="o">=</span>docker --tlsverify
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="c1"># For bourne shell compatible shells use:</span>
+	<span class="nb">alias</span> <span class="nv">docker</span><span class="o">=</span>docker --tlsverify
 
-	<span class="c"># For the fish shell:</span>
-	<span class="nb">alias </span>docker <span class="s2">&quot;docker --tlsverify&quot;</span>
+	<span class="c1"># For the fish shell:</span>
+	<span class="nb">alias</span> docker <span class="s2">&quot;docker --tlsverify&quot;</span>
 </code></pre></div>
 </p>
 

@@ -25,6 +25,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: rgb(239,242,244);
 }
 ol, ul {
 	list-style: none;
@@ -49,6 +50,7 @@ div#wrapper {
 	max-width: 900px;
 	min-height: 100px;
 	font-family: Georgia, Times, 'Times New Roman', serif;
+	background-color: #fff;
 }
 
 div#header h1 {
@@ -147,7 +149,6 @@ div#post p {
 	margin-top: 1.2em;
 }
 div#post {
-	background-color: rgb(244,247,248);
 	padding: 1em;
 	font-size: 1.4rem;
 }
@@ -231,7 +232,7 @@ div#post img {
 
 div#footer {
 	text-align: center;
-	margin: 5rem 0 1rem;
+	padding: 5rem 1rem 1rem;
 }
 
 div#footer a {

@@ -62,14 +62,14 @@ application you can archive this with
 <a href="https://virtualenv.pypa.io/en/latest/">virtualenv</a>.</p>
 
 <p>Install pip:
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>pip install simiki <span class="c"># add sudo to the begining if you are not using virtualenv</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">$ pip install simiki <span class="c1"># add sudo to the begining if you are not using virtualenv</span>
 </code></pre></div>
 </p>
 
 <p>Create the wiki:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">cd</span> /desired/path/of/your/wiki
-<span class="nv">$ </span>simiki init
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">$ <span class="nb">cd</span> /desired/path/of/your/wiki
+$ simiki init
 </code></pre></div>
 
 
@@ -93,19 +93,19 @@ running. I for example have mine set to <code>~/Sites</code> (OS X equivalent to
 
 <p>To create your wiki entries is simple as running the following command:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>simiki new -t <span class="s2">&quot;Title&quot;</span> -c category
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">$ simiki new -t <span class="s2">&quot;Title&quot;</span> -c category
 </code></pre></div>
 
 
 <p>Or just create a file folowing this path: <code>content/$category/filname.md:</code>,
 and add the title and date to the file&rsquo;s header.</p>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">+++
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">+++
 title: <span class="s2">&quot;Title&quot;</span>
 date: 2014-12-31 00:00
 +++
 </code></pre></div>
-</p>
+
 
 <p>I also modified the fabric file to add a function that auto-regenerate
 the html if any modification happens on the <code>content/</code> folder, so I will
@@ -125,7 +125,7 @@ cronjob is need to push the changes to the public wiki.</p>
 <span class="k">def</span> <span class="nf">l</span><span class="p">():</span>
     <span class="n">event_handler</span> <span class="o">=</span> <span class="n">Handler</span><span class="p">()</span>
     <span class="n">observer</span> <span class="o">=</span> <span class="n">Observer</span><span class="p">()</span>
-    <span class="n">observer</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">event_handler</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;content/&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">observer</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">event_handler</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;content/&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">observer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
     <span class="k">try</span><span class="p">:</span>
