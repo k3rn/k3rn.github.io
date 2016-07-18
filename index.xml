@@ -24,7 +24,7 @@ international affairs, history, &lt;a href=&#34;https://last.fm/user/kernnerd&#3
 &lt;a href=&#34;http://www.tvshowtime.com/kern&#34;&gt;television shows&lt;/a&gt;, astronomy, space
 exploration, military aviation and woodworking.&lt;/p&gt;
 
-&lt;h2 id=&#34;professional:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;Professional&lt;/h2&gt;
+&lt;h2 id=&#34;professional&#34;&gt;Professional&lt;/h2&gt;
 
 &lt;p&gt;I spent my time gaining knowledge and experience in my three main areas
 of interest: security, software development and system administration.&lt;/p&gt;
@@ -136,17 +136,17 @@ it, because it&amp;rsquo;s awesome - you have to:&lt;/p&gt;
 &lt;li&gt;Stop and disable the Docker service:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	systemctl stop docker
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	systemctl stop docker
 	systemctl disable docker
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;ul&gt;
 &lt;li&gt;Create the file &lt;code&gt;/etc/systemd/system/docker.service&lt;/code&gt; with the following
 content:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Unit&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Unit&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
 	&lt;span class=&#34;nv&#34;&gt;Description&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Docker Application Container Engine
 	&lt;span class=&#34;nv&#34;&gt;Documentation&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;http://docs.docker.io
 
@@ -161,17 +161,17 @@ content:&lt;/li&gt;
 	&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Install&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
 	&lt;span class=&#34;nv&#34;&gt;WantedBy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;multi-user.target
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;ul&gt;
 &lt;li&gt;Upload the the zip file and unpack it&amp;rsquo;s content to &lt;code&gt;/var/ssl/&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;Start and enable the docker service:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	systemctl start docker
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	systemctl start docker
 	systemctl &lt;span class=&#34;nb&#34;&gt;enable&lt;/span&gt; docker
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;To configure the client, you need to install the same of version of
 Docker that your CoreOS is running, at the time I am writing this the
@@ -179,46 +179,46 @@ CoreOS stable version is 633.1.0 and ships with Docker 1.5, but the most
 recent version of Docker is 1.5. To install this the version 1.5 of
 Docker on OS X you can use homebrew[link]:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	brew tap homebrew/versions
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	brew tap homebrew/versions
 	brew install docker150
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;Copy the client certificate and key and CA cert to ~/.docker/&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	cp ca.pem ~/.docker/ca.pem
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	cp ca.pem ~/.docker/ca.pem
 	cp client/cert.pem ~/.docker/cert.pem
 	cp client-key.pem ~/.docker.pem
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;Set DOCKER_HOST enviroment variable to your VM and add it to your shell
 configuration file:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;# For bourne shell compatible shells use:&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;# For bourne shell compatible shells use:&lt;/span&gt;
 	&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;DOCKER_HOST&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;tcp://your.coreos.host:4243
 
 	&lt;span class=&#34;c1&#34;&gt;# For the Fish shell use:&lt;/span&gt;
 	&lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; -x DOCKER_HOST &lt;span class=&#34;s1&#34;&gt;&amp;#39;tcp://your.coreos.host:4243&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;Now you car run the following command to see if everything works:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	docker --tlsverify info
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	docker --tlsverify info
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;It can be annoying to run every command with the flag
 &lt;code&gt;--tlsverify&lt;/code&gt;, you can add an alias to your shell config file:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;# For bourne shell compatible shells use:&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;# For bourne shell compatible shells use:&lt;/span&gt;
 	&lt;span class=&#34;nb&#34;&gt;alias&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;docker&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;docker --tlsverify
 
 	&lt;span class=&#34;c1&#34;&gt;# For the fish shell:&lt;/span&gt;
 	&lt;span class=&#34;nb&#34;&gt;alias&lt;/span&gt; docker &lt;span class=&#34;s2&#34;&gt;&amp;quot;docker --tlsverify&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;References:&lt;/p&gt;
 
@@ -327,7 +327,7 @@ the html if any modification happens on the &lt;code&gt;content/&lt;/code&gt; fo
 always have a local version, that will be served by apache and just a
 cronjob is need to push the changes to the public wiki.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;time&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;time&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;watchdog.observers&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Observer&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;watchdog.events&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FileSystemEventHandler&lt;/span&gt;
 
@@ -350,7 +350,7 @@ cronjob is need to push the changes to the public wiki.&lt;/p&gt;
         &lt;span class=&#34;n&#34;&gt;observer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;stop&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;observer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;Simiki may not have some useful features on the web pages such as revision
 history and search (I use git and ack respectively on the terminal to solve

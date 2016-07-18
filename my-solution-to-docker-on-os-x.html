@@ -10,9 +10,15 @@
 		<link rel="stylesheet" href="https://mateuskern.com/css/style.css" />
 		<link rel="stylesheet" href="https://mateuskern.com/css/pygments.css" />
 		
-			<script type="text/javascript">
-    window.heap=window.heap||[],heap.load=function(t,e){window.heap.appid=t,window.heap.config=e;var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+t+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(t){return function(){heap.push([t].concat(Array.prototype.slice.call(arguments,0)))}},p=["clearEventProperties","identify","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
-    heap.load("251809452");
+			<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+		Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-23504452-1', 'auto');
+  ga('send', 'pageview');
 </script>
 
 		
@@ -24,7 +30,7 @@
 					<a href="https://mateuskern.com/">
 						<h1>Mateus Kern</h1>
 					</a>
-					<h3>python developer<h3>
+					<h3>python developer & sysadmin<h3>
 				</div>
 				<div id="contact">
 					<span>kern at mateuskern.com</span>
@@ -126,17 +132,17 @@ it, because it&rsquo;s awesome - you have to:</p>
 <li>Stop and disable the Docker service:</li>
 </ul>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	systemctl stop docker
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">	systemctl stop docker
 	systemctl disable docker
 </code></pre></div>
-</p>
+
 
 <ul>
 <li>Create the file <code>/etc/systemd/system/docker.service</code> with the following
 content:</li>
 </ul>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="o">[</span>Unit<span class="o">]</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="o">[</span>Unit<span class="o">]</span>
 	<span class="nv">Description</span><span class="o">=</span>Docker Application Container Engine
 	<span class="nv">Documentation</span><span class="o">=</span>http://docs.docker.io
 
@@ -151,17 +157,17 @@ content:</li>
 	<span class="o">[</span>Install<span class="o">]</span>
 	<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
 </code></pre></div>
-</p>
+
 
 <ul>
 <li>Upload the the zip file and unpack it&rsquo;s content to <code>/var/ssl/</code></li>
 <li>Start and enable the docker service:</li>
 </ul>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	systemctl start docker
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">	systemctl start docker
 	systemctl <span class="nb">enable</span> docker
 </code></pre></div>
-</p>
+
 
 <p>To configure the client, you need to install the same of version of
 Docker that your CoreOS is running, at the time I am writing this the
@@ -169,46 +175,46 @@ CoreOS stable version is 633.1.0 and ships with Docker 1.5, but the most
 recent version of Docker is 1.5. To install this the version 1.5 of
 Docker on OS X you can use homebrew[link]:</p>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	brew tap homebrew/versions
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">	brew tap homebrew/versions
 	brew install docker150
 </code></pre></div>
-</p>
+
 
 <p>Copy the client certificate and key and CA cert to ~/.docker/</p>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	cp ca.pem ~/.docker/ca.pem
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">	cp ca.pem ~/.docker/ca.pem
 	cp client/cert.pem ~/.docker/cert.pem
 	cp client-key.pem ~/.docker.pem
 </code></pre></div>
-</p>
+
 
 <p>Set DOCKER_HOST enviroment variable to your VM and add it to your shell
 configuration file:</p>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="c1"># For bourne shell compatible shells use:</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="c1"># For bourne shell compatible shells use:</span>
 	<span class="nb">export</span> <span class="nv">DOCKER_HOST</span><span class="o">=</span>tcp://your.coreos.host:4243
 
 	<span class="c1"># For the Fish shell use:</span>
 	<span class="nb">set</span> -x DOCKER_HOST <span class="s1">&#39;tcp://your.coreos.host:4243&#39;</span>
 </code></pre></div>
-</p>
+
 
 <p>Now you car run the following command to see if everything works:</p>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	docker --tlsverify info
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">	docker --tlsverify info
 </code></pre></div>
-</p>
+
 
 <p>It can be annoying to run every command with the flag
 <code>--tlsverify</code>, you can add an alias to your shell config file:</p>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="c1"># For bourne shell compatible shells use:</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">	<span class="c1"># For bourne shell compatible shells use:</span>
 	<span class="nb">alias</span> <span class="nv">docker</span><span class="o">=</span>docker --tlsverify
 
 	<span class="c1"># For the fish shell:</span>
 	<span class="nb">alias</span> docker <span class="s2">&quot;docker --tlsverify&quot;</span>
 </code></pre></div>
-</p>
+
 
 <p>References:</p>
 
